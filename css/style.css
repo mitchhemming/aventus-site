@@ -171,14 +171,9 @@ nav.scrolled {
   z-index: 3;
   background:
     linear-gradient(180deg,
-      rgba(6,6,11,0.4) 0%,
-      rgba(6,6,11,0.2) 40%,
-      rgba(6,6,11,0.4) 70%,
-      rgba(6,6,11,0.9) 100%),
-    radial-gradient(ellipse at center,
-      rgba(6,6,11,0.5) 0%,
-      rgba(6,6,11,0.2) 50%,
-      transparent 100%);
+      rgba(6,6,11,0) 0%,
+      rgba(6,6,11,0) 60%,
+      rgba(6,6,11,0.5) 100%);
 }
 
 .hero-content {
