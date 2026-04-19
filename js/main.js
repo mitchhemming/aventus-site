@@ -19,26 +19,20 @@
     }
   });
 
-  // ═══ HERO — PORSCHE DAY → TWILIGHT ═══
-  const heroDay = document.getElementById('heroDay');
+  // ═══ HERO — Badge text syncs with CSS wipe animation cycle ═══
+  // CSS handles the wipe animation. JS syncs the badge text via a timed loop that matches the 14s animation.
   const heroBadge = document.getElementById('heroBadgeState');
-
-  if (heroDay) {
-    gsap.to(heroDay, {
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.5,
-        onUpdate: (self) => {
-          if (heroBadge) {
-            heroBadge.textContent = self.progress > 0.5 ? 'Twilight' : 'Daylight';
-          }
-        }
-      }
-    });
+  if (heroBadge) {
+    // At cycle start: Daylight. At 25% (3.5s in) it transitions. At ~36% (5s) we're in twilight.
+    // We swap the label mid-transition so it feels synchronised with the visual.
+    function runBadgeCycle() {
+      // After 3.5s (wipe midpoint going right) → show Twilight
+      setTimeout(() => { heroBadge.textContent = 'Twilight'; }, 3500);
+      // After 9.5s (wipe midpoint going back) → show Daylight
+      setTimeout(() => { heroBadge.textContent = 'Daylight'; }, 9500);
+    }
+    runBadgeCycle();
+    setInterval(runBadgeCycle, 14000); // matches CSS animation duration
   }
 
   // ═══ REVEAL ANIMATIONS ═══
