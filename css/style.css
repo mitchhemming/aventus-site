@@ -118,11 +118,61 @@ nav.scrolled {
   inset: 0;
   background-size: cover;
   background-position: center;
-  will-change: opacity;
+  will-change: clip-path, opacity;
 }
 
-.hero-img.day { z-index: 2; }
 .hero-img.twilight { z-index: 1; }
+.hero-img.day {
+  z-index: 2;
+  clip-path: inset(0 0 0 0);
+  animation: dayWipe 14s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Scanning line that follows the wipe edge */
+.hero-scan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--gold) 10%,
+    var(--gold) 90%,
+    transparent 100%);
+  box-shadow:
+    0 0 20px rgba(232, 168, 56, 0.8),
+    0 0 60px rgba(232, 168, 56, 0.4),
+    0 0 120px rgba(232, 168, 56, 0.2);
+  z-index: 4;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  animation: scanLine 14s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Day wipe: daylight is visible → wipes right to reveal twilight → holds → wipes back */
+@keyframes dayWipe {
+  0%   { clip-path: inset(0 0 0 0); }           /* Full day */
+  14%  { clip-path: inset(0 0 0 0); }           /* Hold day (2s) */
+  36%  { clip-path: inset(0 100% 0 0); }        /* Wipe right-to-left over 3s, revealing twilight */
+  57%  { clip-path: inset(0 100% 0 0); }        /* Hold twilight (3s) */
+  79%  { clip-path: inset(0 0 0 0); }           /* Wipe back to day over 3s */
+  100% { clip-path: inset(0 0 0 0); }           /* Hold day */
+}
+
+/* Scan line movement matches the wipe */
+@keyframes scanLine {
+  0%   { left: 0; opacity: 0; }
+  14%  { left: 0; opacity: 0; }
+  15%  { left: 0; opacity: 1; }
+  36%  { left: 100%; opacity: 1; }
+  37%  { left: 100%; opacity: 0; }
+  57%  { left: 100%; opacity: 0; }
+  58%  { left: 100%; opacity: 1; }
+  79%  { left: 0; opacity: 1; }
+  80%  { left: 0; opacity: 0; }
+  100% { left: 0; opacity: 0; }
+}
 
 .hero-overlay {
   position: absolute;
@@ -216,6 +266,13 @@ nav.scrolled {
   text-transform: uppercase;
   color: var(--white);
   font-weight: 500;
+  animation: badgeSync 14s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes badgeSync {
+  0%, 25%   { color: var(--white); }
+  36%, 66%  { color: var(--gold); }
+  79%, 100% { color: var(--white); }
 }
 
 .hero-scroll-hint {
