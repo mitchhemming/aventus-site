@@ -146,12 +146,12 @@ nav.scrolled {
   transform: translateX(-50%);
 }
 
-/* Day wipe: daylight is visible → wipes to reveal twilight → holds → wipes back */
+/* Day wipe: daylight is visible → line sweeps left-to-right, revealing twilight as it goes → holds → sweeps back */
 @keyframes dayWipe {
-  0%, 14%   { clip-path: inset(0 0 0 0); }       /* Hold day (2s) */
-  36%       { clip-path: inset(0 100% 0 0); }    /* Wipe revealing twilight */
-  57%       { clip-path: inset(0 100% 0 0); }    /* Hold twilight */
-  79%, 100% { clip-path: inset(0 0 0 0); }       /* Wipe back to day, hold */
+  0%, 14%   { clip-path: inset(0 0 0 0%); }       /* Hold day (2s) */
+  36%       { clip-path: inset(0 0 0 100%); }     /* Wipe from left, revealing twilight as line moves right */
+  57%       { clip-path: inset(0 0 0 100%); }     /* Hold twilight */
+  79%, 100% { clip-path: inset(0 0 0 0%); }       /* Wipe back to day (right-to-left), hold */
 }
 
 /* Line is completely hidden when at rest, only appears during the active wipe */
@@ -196,7 +196,10 @@ nav.scrolled {
   letter-spacing: 0.04em;
   color: var(--gold);
   line-height: 0.9;
-  text-shadow: 0 4px 60px rgba(0, 0, 0, 0.7);
+  text-shadow:
+    0 0 40px rgba(232, 168, 56, 0.35),
+    0 0 80px rgba(6, 6, 11, 0.6),
+    0 4px 30px rgba(0, 0, 0, 0.5);
   opacity: 0;
   transform: translateY(60px);
   animation: heroIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
