@@ -19,21 +19,7 @@
     }
   });
 
-  // ═══ HERO — Badge text syncs with CSS wipe animation cycle ═══
-  // CSS handles the wipe animation. JS syncs the badge text via a timed loop that matches the 14s animation.
-  const heroBadge = document.getElementById('heroBadgeState');
-  if (heroBadge) {
-    // At cycle start: Daylight. At 25% (3.5s in) it transitions. At ~36% (5s) we're in twilight.
-    // We swap the label mid-transition so it feels synchronised with the visual.
-    function runBadgeCycle() {
-      // After 3.5s (wipe midpoint going right) → show Twilight
-      setTimeout(() => { heroBadge.textContent = 'Twilight'; }, 3500);
-      // After 9.5s (wipe midpoint going back) → show Daylight
-      setTimeout(() => { heroBadge.textContent = 'Daylight'; }, 9500);
-    }
-    runBadgeCycle();
-    setInterval(runBadgeCycle, 14000); // matches CSS animation duration
-  }
+  // ═══ HERO — The wipe animation is handled entirely in CSS for performance ═══
 
   // ═══ REVEAL ANIMATIONS ═══
   gsap.utils.toArray('.reveal').forEach((el) => {
