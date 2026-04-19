@@ -126,6 +126,7 @@ nav.scrolled {
   z-index: 2;
   clip-path: inset(0 0 0 0);
   animation: dayWipe 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation-delay: -1s;
 }
 
 /* Scanning line that follows the wipe edge exactly - matches clip-path movement pixel-for-pixel */
@@ -143,6 +144,7 @@ nav.scrolled {
   opacity: 0;
   pointer-events: none;
   animation: scanLine 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation-delay: -1s;
   transform: translateX(-50%);
   will-change: left, opacity;
 }
