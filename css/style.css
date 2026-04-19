@@ -125,7 +125,7 @@ nav.scrolled {
 .hero-img.day {
   z-index: 2;
   clip-path: inset(0 0 0 0);
-  animation: dayWipe 18s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation: dayWipe 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
 /* Scanning line that follows the wipe edge exactly - matches clip-path movement pixel-for-pixel */
@@ -142,31 +142,29 @@ nav.scrolled {
   left: 0;
   opacity: 0;
   pointer-events: none;
-  animation: scanLine 18s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation: scanLine 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   transform: translateX(-50%);
   will-change: left, opacity;
 }
 
-/* 18s cycle: 2s hold day | 3s wipe | 5s hold twilight | 3s wipe back | 5s hold day
-   Percentages: 0% | 11% | 28% | 56% | 72% | 100%
-   = hold day 0-11%, wipe 11-28%, hold twilight 28-56%, wipe back 56-72%, hold day 72-100% */
+/* 12s cycle: 3s hold day | 1.5s wipe | 3s hold twilight | 1.5s wipe back | 3s hold day
+   Percentages: 0% | 25% | 37.5% | 62.5% | 75% | 100% */
 @keyframes dayWipe {
-  0%, 11%   { clip-path: inset(0 0 0 0%); }       /* Hold day */
-  28%       { clip-path: inset(0 0 0 100%); }     /* Wipe complete - full twilight */
-  56%       { clip-path: inset(0 0 0 100%); }     /* Hold twilight */
-  72%       { clip-path: inset(0 0 0 0%); }       /* Wipe back complete */
-  100%      { clip-path: inset(0 0 0 0%); }       /* Hold day */
+  0%, 25%     { clip-path: inset(0 0 0 0%); }       /* Hold day (3s) */
+  37.5%       { clip-path: inset(0 0 0 100%); }     /* Wipe complete (1.5s) */
+  62.5%       { clip-path: inset(0 0 0 100%); }     /* Hold twilight (3s) */
+  75%         { clip-path: inset(0 0 0 0%); }       /* Wipe back (1.5s) */
+  100%        { clip-path: inset(0 0 0 0%); }       /* Hold day (3s) */
 }
 
-/* Line matches the wipe boundary exactly at every keyframe */
 @keyframes scanLine {
-  0%, 10%   { left: 0%; opacity: 0; }
-  11%       { left: 0%; opacity: 1; }
-  28%       { left: 100%; opacity: 1; }
-  29%, 55%  { left: 100%; opacity: 0; }
-  56%       { left: 100%; opacity: 1; }
-  72%       { left: 0%; opacity: 1; }
-  73%, 100% { left: 0%; opacity: 0; }
+  0%, 24%     { left: 0%; opacity: 0; }
+  25%         { left: 0%; opacity: 1; }
+  37.5%       { left: 100%; opacity: 1; }
+  38.5%, 61.5% { left: 100%; opacity: 0; }
+  62.5%       { left: 100%; opacity: 1; }
+  75%         { left: 0%; opacity: 1; }
+  76%, 100%   { left: 0%; opacity: 0; }
 }
 
 .hero-overlay {
