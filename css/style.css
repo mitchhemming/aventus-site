@@ -59,8 +59,8 @@ body::before {
   background-position: center;
   pointer-events: none;
   z-index: 1;
-  animation: topoShift 90s ease-in-out infinite;
-  opacity: 0.7;
+  animation: topoShift 70s ease-in-out infinite;
+  opacity: 1.2;
 }
 
 @keyframes topoShift {
@@ -82,8 +82,8 @@ body::before {
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.35;
+  filter: blur(90px);
+  opacity: 0.65;
   will-change: transform;
 }
 
@@ -92,8 +92,8 @@ body::before {
   height: 60vw;
   top: -20vw;
   left: -20vw;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.35), rgba(232, 168, 56, 0) 70%);
-  animation: orbDrift1 42s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.55), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift1 36s ease-in-out infinite;
 }
 
 .orb-2 {
@@ -101,8 +101,8 @@ body::before {
   height: 50vw;
   bottom: -15vw;
   right: -15vw;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.25), rgba(232, 168, 56, 0) 70%);
-  animation: orbDrift2 52s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.45), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift2 44s ease-in-out infinite;
 }
 
 .orb-3 {
@@ -110,8 +110,8 @@ body::before {
   height: 45vw;
   top: 40%;
   left: 55%;
-  background: radial-gradient(circle, rgba(77, 159, 255, 0.12), rgba(77, 159, 255, 0) 70%);
-  animation: orbDrift3 66s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(77, 159, 255, 0.22), rgba(77, 159, 255, 0) 70%);
+  animation: orbDrift3 56s ease-in-out infinite;
 }
 
 .orb-4 {
@@ -119,27 +119,52 @@ body::before {
   height: 38vw;
   top: 80%;
   left: 5%;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.2), rgba(232, 168, 56, 0) 70%);
-  animation: orbDrift4 58s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.4), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift4 48s ease-in-out infinite;
+}
+
+/* NEW — vertical light ray that sweeps across periodically like a spotlight */
+.orb-ray {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(232, 168, 56, 0.15) 40%,
+    rgba(232, 168, 56, 0.4) 50%,
+    rgba(232, 168, 56, 0.15) 60%,
+    transparent 100%);
+  filter: blur(18px);
+  opacity: 0;
+  animation: rayScan 22s linear infinite;
+}
+
+@keyframes rayScan {
+  0%    { left: -10%; opacity: 0; }
+  10%   { opacity: 0.9; }
+  90%   { opacity: 0.9; }
+  100%  { left: 110%; opacity: 0; }
 }
 
 @keyframes orbDrift1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(30vw, 20vh) scale(1.15); }
-  66%      { transform: translate(10vw, 50vh) scale(0.9); }
+  33%      { transform: translate(35vw, 25vh) scale(1.2); }
+  66%      { transform: translate(15vw, 60vh) scale(0.85); }
 }
 @keyframes orbDrift2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-35vw, -40vh) scale(1.2); }
+  50%      { transform: translate(-40vw, -50vh) scale(1.3); }
 }
 @keyframes orbDrift3 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  40%      { transform: translate(-25vw, 15vh) scale(0.85); }
-  75%      { transform: translate(15vw, -20vh) scale(1.1); }
+  40%      { transform: translate(-30vw, 20vh) scale(0.8); }
+  75%      { transform: translate(20vw, -25vh) scale(1.2); }
 }
 @keyframes orbDrift4 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  45%      { transform: translate(25vw, -35vh) scale(1.25); }
+  45%      { transform: translate(30vw, -40vh) scale(1.35); }
 }
 
 /* ── Layer 3: Noise grain ── */
@@ -640,7 +665,7 @@ nav.scrolled .nav-links {
 
 /* ═══ GALLERY (Media) ═══ */
 .gallery {
-  padding: 40px 48px 180px;
+  padding: 40px 48px 60px;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -823,6 +848,15 @@ nav.scrolled .nav-links {
   white-space: nowrap;
   position: relative;
   padding-bottom: 8px;
+  cursor: default;
+}
+
+.pin-wrap.pin-complete .pin-state {
+  cursor: pointer;
+}
+
+.pin-wrap.pin-complete .pin-state:hover {
+  color: var(--gold);
 }
 
 .pin-state::after {
@@ -852,8 +886,9 @@ nav.scrolled .nav-links {
   flex-shrink: 0;
 }
 
+/* All progress text/bar is gold now (was blue for Virtual Staging) */
 .pin-progress .pin-state.active {
-  color: var(--blue);
+  color: var(--gold);
 }
 
 .pin-progress-bar {
@@ -867,9 +902,27 @@ nav.scrolled .nav-links {
 .pin-progress-fill {
   height: 100%;
   width: 0%;
-  background: var(--blue);
-  border-radius: 1px;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(232, 168, 56, 0.6);
   transition: width 0.1s linear;
+  border-radius: 1px;
+}
+
+/* Pin scan line - sweeps across the frame during transitions */
+.pin-scan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--gold);
+  box-shadow:
+    0 0 14px rgba(232, 168, 56, 0.95),
+    0 0 36px rgba(232, 168, 56, 0.5);
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* ═══ CAPABILITIES GRID ═══ */
@@ -1061,7 +1114,7 @@ nav.scrolled .nav-links {
 
 /* ═══ AGENCY METRICS ═══ */
 .agency-metrics {
-  padding: 80px 48px 180px;
+  padding: 80px 48px 80px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -1192,29 +1245,90 @@ nav.scrolled .nav-links {
 }
 
 .bf-item {
-  padding: 56px 48px;
+  padding: 48px 40px;
   border: 1px solid var(--white-faint);
   border-radius: 8px;
-  transition: border-color 0.3s ease, background 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  background: rgba(6, 6, 11, 0.3);
+}
+
+.bf-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .bf-item:hover {
-  border-color: var(--gold-glow);
-  background: rgba(232, 168, 56, 0.02);
+  border-color: rgba(232, 168, 56, 0.35);
+  background: rgba(232, 168, 56, 0.03);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.bf-item:hover::before {
+  opacity: 1;
+}
+
+.bf-num {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .bf-item h3 {
-  font-size: clamp(22px, 2.5vw, 28px);
+  font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 600;
   color: var(--white);
-  margin-bottom: 16px;
-  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 .bf-item p {
   font-size: 15px;
   color: var(--white-dim);
   line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.bf-services {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--white-faint);
+}
+
+.bf-services li {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  padding: 8px 14px;
+  border: 1px solid var(--white-faint);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+}
+
+.bf-item:hover .bf-services li {
+  border-color: rgba(232, 168, 56, 0.25);
+  color: var(--white);
 }
 
 /* ═══ STATS ═══ */
@@ -1563,9 +1677,9 @@ nav {
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 32px;
   white-space: nowrap;
-  font-size: clamp(24px, 4vw, 52px);
+  font-size: clamp(18px, 2.6vw, 34px);
   font-weight: 600;
   color: var(--white);
   letter-spacing: -0.005em;
@@ -1576,16 +1690,17 @@ nav {
 
 .marquee-track span {
   display: inline-block;
-  padding-right: 40px;
+  padding-right: 32px;
 }
 
+.marquee-track .m-gold-italic,
 .marquee-track .m-italic {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 500;
   color: var(--gold);
   letter-spacing: 0;
-  font-size: 1.08em;
+  font-size: 1.15em;
 }
 
 .marquee-track .m-dot {
