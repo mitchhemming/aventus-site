@@ -266,16 +266,6 @@ nav.scrolled .nav-links {
   background-size: cover;
   background-position: center;
   will-change: clip-path, opacity;
-  -webkit-mask-image: linear-gradient(180deg,
-    black 0%,
-    black 70%,
-    rgba(0,0,0,0.5) 90%,
-    transparent 100%);
-  mask-image: linear-gradient(180deg,
-    black 0%,
-    black 70%,
-    rgba(0,0,0,0.5) 90%,
-    transparent 100%);
 }
 
 .hero-img.twilight { z-index: 1; }
@@ -336,10 +326,10 @@ nav.scrolled .nav-links {
   background:
     linear-gradient(180deg,
       rgba(6,6,11,0) 0%,
-      rgba(6,6,11,0) 40%,
-      rgba(6,6,11,0.2) 70%,
-      rgba(6,6,11,0.65) 88%,
-      rgba(6,6,11,0.95) 96%,
+      rgba(6,6,11,0) 35%,
+      rgba(6,6,11,0.3) 60%,
+      rgba(6,6,11,0.75) 80%,
+      rgba(6,6,11,1) 95%,
       rgba(6,6,11,1) 100%);
   pointer-events: none;
 }
@@ -524,6 +514,11 @@ nav.scrolled .nav-links {
   font-style: normal;
   color: var(--white);
   font-weight: 500;
+}
+
+.intro-gold {
+  color: var(--gold);
+  font-weight: 600;
 }
 
 /* Word-by-word reveal */
@@ -948,7 +943,6 @@ nav.scrolled .nav-links {
   width: 0%;
   background: var(--gold);
   box-shadow: 0 0 12px rgba(232, 168, 56, 0.6);
-  transition: width 0.1s linear;
   border-radius: 1px;
 }
 
@@ -1062,17 +1056,41 @@ nav.scrolled .nav-links {
   cursor: pointer;
 }
 
-.cap-item:hover {
-  border-color: rgba(232, 168, 56, 0.4);
-  transform: translateY(-4px);
-}
-
+/* Cap-image fades in when revealed */
 .cap-image {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--bg-soft);
+}
+
+.cap-item.image-visible .cap-image {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cap-item stagger via nth-child on the reveal of cap-content */
+.cap-item:nth-child(1) .cap-content { transition-delay: 0s; }
+.cap-item:nth-child(2) .cap-content { transition-delay: 0.08s; }
+.cap-item:nth-child(3) .cap-content { transition-delay: 0.16s; }
+.cap-item:nth-child(4) .cap-content { transition-delay: 0.24s; }
+.cap-item:nth-child(5) .cap-content { transition-delay: 0.32s; }
+
+.cap-item:nth-child(1) .cap-image { transition-delay: 0s; }
+.cap-item:nth-child(2) .cap-image { transition-delay: 0.08s; }
+.cap-item:nth-child(3) .cap-image { transition-delay: 0.16s; }
+.cap-item:nth-child(4) .cap-image { transition-delay: 0.24s; }
+.cap-item:nth-child(5) .cap-image { transition-delay: 0.32s; }
+
+.cap-item:hover {
+  border-color: rgba(232, 168, 56, 0.4);
+  transform: translateY(-4px);
 }
 
 .cap-before,
@@ -1891,7 +1909,7 @@ main, section, footer {
   right: 6%;
 }
 
-/* ═══ MARQUEE STRIPS — horizontal scrolling text between sections ═══ */
+/* ═══ MARQUEE STRIPS — auto-scrolling text strip ═══ */
 .marquee {
   position: relative;
   overflow: hidden;
@@ -1915,13 +1933,6 @@ main, section, footer {
 .marquee::before { top: 0; }
 .marquee::after { bottom: 0; }
 
-.marquee-dark {
-  background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(6, 6, 11, 0.4) 50%,
-    transparent 100%);
-}
-
 .marquee-track {
   display: flex;
   align-items: center;
@@ -1941,14 +1952,19 @@ main, section, footer {
   padding-right: 36px;
 }
 
-.marquee-track .m-gold-italic,
-.marquee-track .m-italic {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 500;
+/* Gold-colored emphasis words (no italic, just gold) */
+.marquee-track .m-gold {
   color: var(--gold);
-  letter-spacing: 0;
-  font-size: 1.15em;
+}
+
+/* Auto-scrolling variant - continuous CSS animation, not scroll-linked */
+.marquee-auto-track {
+  animation: marqueeScroll 60s linear infinite;
+}
+
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .marquee-track .m-dot {
