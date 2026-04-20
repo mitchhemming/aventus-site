@@ -205,9 +205,9 @@ nav.scrolled {
 }
 
 .hero-sub {
-  font-size: clamp(16px, 2vw, 24px);
+  font-size: clamp(14px, 1.7vw, 20px);
   font-weight: 600;
-  letter-spacing: 10px;
+  letter-spacing: 6px;
   text-transform: uppercase;
   color: var(--white);
   margin-top: 32px;
