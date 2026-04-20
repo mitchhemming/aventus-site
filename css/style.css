@@ -326,11 +326,11 @@ nav.scrolled .nav-links {
   background:
     linear-gradient(180deg,
       rgba(6,6,11,0) 0%,
-      rgba(6,6,11,0) 20%,
-      rgba(6,6,11,0.15) 40%,
-      rgba(6,6,11,0.5) 65%,
-      rgba(6,6,11,0.9) 85%,
-      rgba(6,6,11,1) 95%,
+      rgba(6,6,11,0) 15%,
+      rgba(6,6,11,0.1) 35%,
+      rgba(6,6,11,0.4) 55%,
+      rgba(6,6,11,0.8) 75%,
+      rgba(6,6,11,1) 85%,
       rgba(6,6,11,1) 100%);
   pointer-events: none;
 }
@@ -420,6 +420,14 @@ nav.scrolled .nav-links {
   gap: 14px;
   opacity: 0;
   animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+  transition: opacity 0.4s ease;
+}
+
+/* Fade out scroll indicator when user starts scrolling */
+nav.scrolled ~ .hero .hero-scroll-indicator,
+body.scrolled .hero-scroll-indicator {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 .hero-scroll-label {
@@ -466,11 +474,16 @@ nav.scrolled .nav-links {
 
 /* ═══ INTRO ═══ */
 .intro {
-  padding: 110px 48px;
+  padding: 160px 48px 110px;
   display: flex;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg,
+    rgba(6,6,11,1) 0%,
+    rgba(6,6,11,1) 8%,
+    transparent 20%,
+    transparent 100%);
 }
 
 .intro::before {
@@ -1058,23 +1071,13 @@ nav.scrolled .nav-links {
   cursor: pointer;
 }
 
-/* Cap-image fades in when revealed */
+/* Cap-image always visible, the content below has its own reveal */
 .cap-image {
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--bg-soft);
-}
-
-.cap-item.image-visible .cap-image {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Cap-item stagger via nth-child on the reveal of cap-content */
@@ -1083,12 +1086,6 @@ nav.scrolled .nav-links {
 .cap-item:nth-child(3) .cap-content { transition-delay: 0.16s; }
 .cap-item:nth-child(4) .cap-content { transition-delay: 0.24s; }
 .cap-item:nth-child(5) .cap-content { transition-delay: 0.32s; }
-
-.cap-item:nth-child(1) .cap-image { transition-delay: 0s; }
-.cap-item:nth-child(2) .cap-image { transition-delay: 0.08s; }
-.cap-item:nth-child(3) .cap-image { transition-delay: 0.16s; }
-.cap-item:nth-child(4) .cap-image { transition-delay: 0.24s; }
-.cap-item:nth-child(5) .cap-image { transition-delay: 0.32s; }
 
 .cap-item:hover {
   border-color: rgba(232, 168, 56, 0.4);
