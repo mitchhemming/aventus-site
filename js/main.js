@@ -155,43 +155,22 @@
     });
   }
 
-  // ═══ INTRO STATEMENT — word-by-word reveal ═══
-  const introText = document.getElementById('introText');
-  if (introText) {
-    // Wrap every text word in a span, preserving child element structure (em tags)
-    function wrapWords(node) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.textContent;
-        const frag = document.createDocumentFragment();
-        const tokens = text.split(/(\s+)/);
-        tokens.forEach(token => {
-          if (token.trim() === '') {
-            frag.appendChild(document.createTextNode(token));
-          } else {
-            const span = document.createElement('span');
-            span.className = 'intro-word';
-            span.textContent = token;
-            frag.appendChild(span);
-          }
-        });
-        node.parentNode.replaceChild(frag, node);
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        Array.from(node.childNodes).forEach(wrapWords);
-      }
-    }
-    wrapWords(introText);
-
-    const words = introText.querySelectorAll('.intro-word');
-    words.forEach((w, i) => {
-      w.style.transitionDelay = (i * 0.08) + 's';
-    });
-
+  // ═══ INTRO STATEMENT — cinematic 3-line entrance ═══
+  const introBlock = document.getElementById('introBlock');
+  if (introBlock) {
     ScrollTrigger.create({
-      trigger: introText,
-      start: 'top 82%',
-      onEnter: () => introText.classList.add('words-in'),
-      once: true
+      trigger: introBlock,
+      start: 'top 85%',
+      onEnter: () => introBlock.classList.add('visible'),
+      onEnterBack: () => introBlock.classList.add('visible'),
+      onLeaveBack: () => introBlock.classList.remove('visible')
     });
+
+    // If already in viewport at load, trigger immediately with slight delay for drama
+    const rect = introBlock.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+      setTimeout(() => introBlock.classList.add('visible'), 200);
+    }
   }
 
   // Marquees are auto-scrolling via CSS animation, no JS needed
