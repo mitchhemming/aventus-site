@@ -27,10 +27,12 @@
   // ═══ NAV SCROLL STATE ═══
   const nav = document.getElementById('nav');
   ScrollTrigger.create({
-    start: 100,
+    start: 50,
     end: 99999,
     onUpdate: (self) => {
-      nav.classList.toggle('scrolled', self.scroll() > 100);
+      const scrolled = self.scroll() > 50;
+      nav.classList.toggle('scrolled', scrolled);
+      document.body.classList.toggle('scrolled', scrolled);
     }
   });
 
@@ -49,14 +51,18 @@
       },
       onLeaveBack: () => {
         el.classList.remove('visible');
-        // Reset counters so they re-animate next time they enter
         el.querySelectorAll('.counter').forEach(c => {
           delete c.dataset.done;
           c.innerText = '0';
         });
       }
-      // NOTE: no onLeave - once shown on scroll down, stays shown
     });
+
+    // Show immediately if already in viewport on page load
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      el.classList.add('visible');
+    }
   });
 
   gsap.utils.toArray('.counter').forEach((el) => {
@@ -177,7 +183,7 @@
 
     const words = introText.querySelectorAll('.intro-word');
     words.forEach((w, i) => {
-      w.style.transitionDelay = (i * 0.04) + 's';
+      w.style.transitionDelay = (i * 0.08) + 's';
     });
 
     ScrollTrigger.create({
@@ -219,18 +225,7 @@
         scan: item.querySelector('.cap-scan')
       }));
 
-      // Fade in the tile images as the capabilities section enters viewport (re-triggerable on scroll-up only)
-      capItems.forEach((item) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: 'top 90%',
-          onEnter: () => item.classList.add('image-visible'),
-          onEnterBack: () => item.classList.add('image-visible'),
-          onLeaveBack: () => item.classList.remove('image-visible')
-        });
-      });
-
-      // Scroll-driven clip-path reveal (after fade-in)
+      // Scroll-driven clip-path reveal - images always visible, content revealed by .reveal class
       ScrollTrigger.create({
         trigger: capPin,
         start: 'top 60%',
@@ -392,7 +387,7 @@
         scrollTrigger: {
           trigger: sgPin,
           start: 'top top',
-          end: '+=1200',
+          end: '+=800',
           scrub: 1,
           pin: true,
           anticipatePin: 1,
