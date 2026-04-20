@@ -187,6 +187,7 @@ nav.scrolled {
   padding: 0 24px;
   max-width: 1400px;
   margin: 0 auto;
+  transform: translateY(-8vh);
 }
 
 .hero-title {
@@ -271,18 +272,48 @@ nav.scrolled {
   79%, 100% { color: var(--white); }
 }
 
-.hero-scroll-hint {
+.hero-dot {
+  display: inline-block;
+  color: var(--gold);
+  margin: 0 10px;
+  font-weight: 400;
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+/* Pulsing gold line that animates downward to indicate scroll */
+.hero-scroll-pulse {
   position: absolute;
-  bottom: 32px;
   left: 50%;
+  bottom: 48px;
   transform: translateX(-50%);
+  width: 1px;
+  height: 56px;
   z-index: 5;
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--white-muted);
+  overflow: hidden;
   opacity: 0;
   animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+}
+
+.hero-scroll-pulse::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -56px;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(180deg,
+    rgba(232, 168, 56, 0) 0%,
+    rgba(232, 168, 56, 0.9) 50%,
+    rgba(232, 168, 56, 0) 100%);
+  animation: scrollPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%   { transform: translateY(0);     opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(112px); opacity: 0; }
 }
 
 /* ═══ INTRO ═══ */
