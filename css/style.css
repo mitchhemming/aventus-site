@@ -326,9 +326,10 @@ nav.scrolled .nav-links {
   background:
     linear-gradient(180deg,
       rgba(6,6,11,0) 0%,
-      rgba(6,6,11,0) 35%,
-      rgba(6,6,11,0.3) 60%,
-      rgba(6,6,11,0.75) 80%,
+      rgba(6,6,11,0) 20%,
+      rgba(6,6,11,0.15) 40%,
+      rgba(6,6,11,0.5) 65%,
+      rgba(6,6,11,0.9) 85%,
       rgba(6,6,11,1) 95%,
       rgba(6,6,11,1) 100%);
   pointer-events: none;
@@ -944,6 +945,7 @@ nav.scrolled .nav-links {
   background: var(--gold);
   box-shadow: 0 0 12px rgba(232, 168, 56, 0.6);
   border-radius: 1px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Pin scan line - follows the edge of the clip-path reveal */
