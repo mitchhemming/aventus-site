@@ -191,18 +191,17 @@ nav.scrolled {
 }
 
 .hero-title {
-  font-size: clamp(64px, 12vw, 180px);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  line-height: 0.9;
-  text-shadow:
-    0 0 50px rgba(232, 168, 56, 0.4),
-    0 0 100px rgba(6, 6, 11, 0.7),
-    0 4px 40px rgba(0, 0, 0, 0.6);
+  display: block;
+  width: clamp(300px, 60vw, 900px);
+  height: auto;
+  margin: 0 auto;
   opacity: 0;
   transform: translateY(60px);
   animation: heroIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  filter:
+    drop-shadow(0 0 40px rgba(232, 168, 56, 0.35))
+    drop-shadow(0 0 80px rgba(6, 6, 11, 0.6))
+    drop-shadow(0 4px 30px rgba(0, 0, 0, 0.5));
 }
 
 .hero-sub {
@@ -274,11 +273,14 @@ nav.scrolled {
 
 .hero-dot {
   display: inline-block;
-  color: var(--gold);
-  margin: 0 10px;
-  font-weight: 400;
-  opacity: 0.85;
-  transform: translateY(-2px);
+  color: var(--white);
+  margin: 0 16px;
+  font-size: 1.8em;
+  line-height: 0;
+  font-weight: 700;
+  vertical-align: middle;
+  transform: translateY(-0.08em);
+  opacity: 0.95;
 }
 
 /* Pulsing gold line that animates downward to indicate scroll */
@@ -287,33 +289,39 @@ nav.scrolled {
   left: 50%;
   bottom: 48px;
   transform: translateX(-50%);
-  width: 1px;
-  height: 56px;
+  width: 3px;
+  height: 72px;
   z-index: 5;
   overflow: hidden;
   opacity: 0;
   animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+  border-radius: 2px;
 }
 
 .hero-scroll-pulse::before {
   content: '';
   position: absolute;
   left: 0;
-  top: -56px;
-  width: 1px;
-  height: 56px;
+  top: -72px;
+  width: 3px;
+  height: 72px;
   background: linear-gradient(180deg,
     rgba(232, 168, 56, 0) 0%,
-    rgba(232, 168, 56, 0.9) 50%,
+    rgba(232, 168, 56, 1) 45%,
+    rgba(232, 168, 56, 1) 55%,
     rgba(232, 168, 56, 0) 100%);
-  animation: scrollPulse 2.4s ease-in-out infinite;
+  box-shadow:
+    0 0 12px rgba(232, 168, 56, 0.7),
+    0 0 24px rgba(232, 168, 56, 0.35);
+  border-radius: 2px;
+  animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
   0%   { transform: translateY(0);     opacity: 0; }
-  20%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateY(112px); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateY(144px); opacity: 0; }
 }
 
 /* ═══ INTRO ═══ */
