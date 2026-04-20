@@ -38,6 +38,28 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* ── Ambient topographic pattern — fills the entire page with subtle organic motion ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23e8a838' stroke-width='0.6' opacity='0.08'%3E%3Cpath d='M -100 400 Q 200 300 400 400 T 800 400 T 1300 400'/%3E%3Cpath d='M -100 450 Q 200 350 400 450 T 800 450 T 1300 450'/%3E%3Cpath d='M -100 350 Q 200 250 400 350 T 800 350 T 1300 350'/%3E%3Cpath d='M -100 500 Q 200 400 400 500 T 800 500 T 1300 500'/%3E%3Cpath d='M -100 300 Q 200 200 400 300 T 800 300 T 1300 300'/%3E%3Cpath d='M -100 550 Q 250 450 500 550 T 900 550 T 1300 550'/%3E%3Cpath d='M -100 250 Q 250 150 500 250 T 900 250 T 1300 250'/%3E%3Cpath d='M -100 600 Q 300 500 600 600 T 1000 600 T 1300 600'/%3E%3Cpath d='M -100 200 Q 300 100 600 200 T 1000 200 T 1300 200'/%3E%3Cpath d='M -100 650 Q 350 550 650 650 T 1050 650 T 1300 650'/%3E%3Cpath d='M -100 150 Q 350 50 650 150 T 1050 150 T 1300 150'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 1;
+  animation: topoShift 60s ease-in-out infinite;
+  opacity: 0.8;
+}
+
+@keyframes topoShift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(-2%, 1%) scale(1.02); }
+  66%      { transform: translate(1%, -1.5%) scale(1.01); }
 }
 
 /* ── Noise grain overlay ── */
@@ -99,6 +121,16 @@ nav.scrolled .nav-logo {
   display: flex;
   gap: 40px;
   list-style: none;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+nav.scrolled .nav-links {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 .nav-links a {
@@ -231,6 +263,11 @@ nav.scrolled .nav-logo {
   opacity: 0;
   transform: translateY(30px);
   animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0 4px;
 }
 
 .hero-tag {
@@ -249,52 +286,16 @@ nav.scrolled .nav-logo {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.hero-badge {
-  position: absolute;
-  top: 50%;
-  right: 48px;
-  transform: translateY(-50%);
-  z-index: 5;
-  text-align: right;
-  opacity: 0;
-  animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
-}
-
-.hero-badge-label {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 6px;
-}
-
-.hero-badge-state {
-  display: block;
-  font-size: 14px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--white);
-  font-weight: 500;
-  animation: badgeSync 14s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes badgeSync {
-  0%, 25%   { color: var(--white); }
-  36%, 66%  { color: var(--gold); }
-  79%, 100% { color: var(--white); }
-}
-
 .hero-dot {
   display: inline-block;
-  color: var(--white);
-  margin: 0 16px;
-  font-size: 1.8em;
-  line-height: 0;
-  font-weight: 700;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin: 0 14px;
   vertical-align: middle;
-  transform: translateY(-0.08em);
-  opacity: 0.95;
+  box-shadow: 0 0 10px rgba(232, 168, 56, 0.6);
+  flex-shrink: 0;
 }
 
 /* Scroll indicator - SCROLL label above a pulsing gold line */
@@ -1019,12 +1020,6 @@ nav.scrolled .nav-logo {
   margin-bottom: 48px;
 }
 
-.unified-heading em {
-  font-style: normal;
-  color: var(--gold);
-  font-weight: 800;
-}
-
 .unified-body {
   max-width: 680px;
   font-size: clamp(15px, 1.5vw, 18px);
@@ -1266,6 +1261,72 @@ footer {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Editorial italic serif accent for emphasis words ── */
+.accent-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+  font-size: 1.08em;
+}
+
+/* ═══ MARQUEE STRIPS — horizontal scrolling text between sections ═══ */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 0;
+  border-top: 1px solid var(--white-faint);
+  border-bottom: 1px solid var(--white-faint);
+  background: linear-gradient(180deg,
+    rgba(6, 6, 11, 0) 0%,
+    rgba(232, 168, 56, 0.02) 50%,
+    rgba(6, 6, 11, 0) 100%);
+}
+
+.marquee-dark {
+  background: linear-gradient(180deg,
+    rgba(6, 6, 11, 0) 0%,
+    rgba(6, 6, 11, 0.6) 100%);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  white-space: nowrap;
+  font-size: clamp(40px, 7vw, 96px);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  will-change: transform;
+  width: max-content;
+}
+
+.marquee-track span {
+  display: inline-block;
+  padding-right: 60px;
+}
+
+.marquee-track .m-italic {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0;
+  font-size: 1.08em;
+}
+
+.marquee-track .m-dot {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 0.6em;
+  padding: 0;
+  transform: translateY(-0.15em);
+  opacity: 0.8;
 }
 
 /* ═══ RESPONSIVE ═══ */
@@ -1568,6 +1629,11 @@ footer {
     letter-spacing: 1.5px;
     padding: 0 16px;
   }
+
+  /* Marquee */
+  .marquee { padding: 32px 0; }
+  .marquee-track { gap: 32px; font-size: clamp(32px, 9vw, 56px); }
+  .marquee-track span { padding-right: 32px; }
 }
 
 /* Small mobile (iPhone SE, Galaxy Fold etc.) */
