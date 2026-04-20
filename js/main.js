@@ -34,16 +34,30 @@
     }
   });
 
-  // ═══ REVEAL ANIMATIONS ═══
+  // ═══ REVEAL ANIMATIONS — re-triggerable on scroll up/down ═══
   gsap.utils.toArray('.reveal').forEach((el) => {
     ScrollTrigger.create({
       trigger: el,
       start: 'top 92%',
+      end: 'bottom 8%',
       onEnter: () => {
         el.classList.add('visible');
         el.querySelectorAll('.counter').forEach(animateCounter);
       },
-      once: true
+      onEnterBack: () => {
+        el.classList.add('visible');
+      },
+      onLeave: () => {
+        el.classList.remove('visible');
+      },
+      onLeaveBack: () => {
+        el.classList.remove('visible');
+        // Reset counters so they re-animate next time they enter
+        el.querySelectorAll('.counter').forEach(c => {
+          delete c.dataset.done;
+          c.innerText = '0';
+        });
+      }
     });
   });
 
@@ -53,8 +67,12 @@
       ScrollTrigger.create({
         trigger: el,
         start: 'top 92%',
+        end: 'bottom 8%',
         onEnter: () => animateCounter(el),
-        once: true
+        onLeaveBack: () => {
+          delete el.dataset.done;
+          el.innerText = '0';
+        }
       });
     }
   });
@@ -173,22 +191,7 @@
     });
   }
 
-  // ═══ MARQUEE ═══
-  gsap.utils.toArray('.marquee-track').forEach((track) => {
-    const direction = track.dataset.direction === 'right' ? 1 : -1;
-    const speed = parseFloat(track.dataset.speed || '0.5');
-
-    gsap.to(track, {
-      xPercent: direction * 60 * speed,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: track.closest('.marquee'),
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 2.5,
-      }
-    });
-  });
+  // Marquees are auto-scrolling via CSS animation, no JS needed
 
   // ═══ PARALLAX ═══
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
@@ -219,14 +222,27 @@
         scan: item.querySelector('.cap-scan')
       }));
 
+      // Fade in the tile images as the capabilities section enters viewport (re-triggerable)
+      capItems.forEach((item) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: 'top 90%',
+          end: 'bottom 10%',
+          onEnter: () => item.classList.add('image-visible'),
+          onEnterBack: () => item.classList.add('image-visible'),
+          onLeave: () => item.classList.remove('image-visible'),
+          onLeaveBack: () => item.classList.remove('image-visible')
+        });
+      });
+
+      // Scroll-driven clip-path reveal (after fade-in)
       ScrollTrigger.create({
         trigger: capPin,
-        start: 'top 75%',
-        end: 'bottom 40%',
+        start: 'top 60%',
+        end: 'bottom 30%',
         scrub: 0.8,
         onUpdate: (self) => {
           const p = self.progress;
-          // Active zone: 0.1 → 0.9 (lead-in and hold at end)
           const activeP = Math.max(0, Math.min(1, (p - 0.1) / 0.8));
           const tileShare = 1 / totalTiles;
 
@@ -375,6 +391,9 @@
       const sgSticky = sgPin.querySelector('.pin-sticky');
       const sgHeader = sgPin.querySelector('.pin-header');
 
+      // Smooth setters for values we update during scroll
+      const setFillWidth = sgFill ? gsap.quickTo(sgFill, 'width', { duration: 0.25, ease: 'sine.out' }) : null;
+
       gsap.to(sgStaged, {
         opacity: 1,
         ease: 'sine.inOut',
@@ -396,7 +415,7 @@
             const p = self.progress;
             if (sgSticky) sgSticky.style.setProperty('--progress', (p * 100) + '%');
             if (sgHeader) sgHeader.style.transform = `translateY(${p * -20}px)`;
-            if (sgFill) sgFill.style.width = (p * 100) + '%';
+            if (setFillWidth) setFillWidth((p * 100) + '%');
             if (sgLabelEmpty) sgLabelEmpty.classList.toggle('active', p < 0.5);
             if (sgLabelStaged) sgLabelStaged.classList.toggle('active', p >= 0.5);
           }
