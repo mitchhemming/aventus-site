@@ -616,9 +616,9 @@ body.scrolled .hero-scroll-indicator {
 
 .intro-ghost {
   position: absolute;
-  top: 0;
+  top: calc(50% - 18px);
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translate(-50%, -50%) translateY(20px);
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(38px, 5.2vw, 78px);
@@ -647,7 +647,6 @@ body.scrolled .hero-scroll-indicator {
   line-height: 0.95;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
-  margin-top: 24px;
 }
 
 .intro-brand {
@@ -681,7 +680,7 @@ body.scrolled .hero-scroll-indicator {
 
 #introBlock.visible .intro-ghost {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translate(-50%, -50%) translateY(0);
 }
 
 #introBlock.visible .intro-col + .intro-col::before {
@@ -2592,7 +2591,6 @@ main, section, footer {
   .intro-verb {
     font-size: clamp(48px, 14vw, 80px);
     margin-bottom: 12px;
-    margin-top: 18px;
   }
   .intro-ghost {
     font-size: clamp(38px, 11vw, 64px);
