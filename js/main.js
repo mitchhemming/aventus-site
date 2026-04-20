@@ -189,11 +189,23 @@
       }));
 
       // Scroll-driven clip-path reveal - images always visible, content revealed by .reveal class
+      // Reset state function for when user scrolls above section (re-trigger on scroll down)
+      const resetCaps = () => {
+        tileData.forEach(({ after, scan }) => {
+          if (after) after.style.clipPath = 'inset(0 100% 0 0)';
+          if (scan) scan.style.opacity = 0;
+        });
+      };
+
+      // Apply initial state
+      resetCaps();
+
       ScrollTrigger.create({
         trigger: capPin,
-        start: 'top 60%',
-        end: 'bottom 30%',
+        start: 'top 85%',
+        end: 'bottom 40%',
         scrub: 0.8,
+        onLeaveBack: resetCaps,
         onUpdate: (self) => {
           const p = self.progress;
           const activeP = Math.max(0, Math.min(1, (p - 0.1) / 0.8));
