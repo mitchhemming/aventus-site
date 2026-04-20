@@ -34,21 +34,18 @@
     }
   });
 
-  // ═══ REVEAL ANIMATIONS — re-triggerable on scroll up/down ═══
+  // ═══ REVEAL ANIMATIONS — re-triggerable only when scrolling back up past element ═══
   gsap.utils.toArray('.reveal').forEach((el) => {
     ScrollTrigger.create({
       trigger: el,
       start: 'top 92%',
-      end: 'bottom 8%',
       onEnter: () => {
         el.classList.add('visible');
         el.querySelectorAll('.counter').forEach(animateCounter);
       },
       onEnterBack: () => {
         el.classList.add('visible');
-      },
-      onLeave: () => {
-        el.classList.remove('visible');
+        el.querySelectorAll('.counter').forEach(animateCounter);
       },
       onLeaveBack: () => {
         el.classList.remove('visible');
@@ -58,6 +55,7 @@
           c.innerText = '0';
         });
       }
+      // NOTE: no onLeave - once shown on scroll down, stays shown
     });
   });
 
@@ -67,7 +65,6 @@
       ScrollTrigger.create({
         trigger: el,
         start: 'top 92%',
-        end: 'bottom 8%',
         onEnter: () => animateCounter(el),
         onLeaveBack: () => {
           delete el.dataset.done;
@@ -222,15 +219,13 @@
         scan: item.querySelector('.cap-scan')
       }));
 
-      // Fade in the tile images as the capabilities section enters viewport (re-triggerable)
+      // Fade in the tile images as the capabilities section enters viewport (re-triggerable on scroll-up only)
       capItems.forEach((item) => {
         ScrollTrigger.create({
           trigger: item,
           start: 'top 90%',
-          end: 'bottom 10%',
           onEnter: () => item.classList.add('image-visible'),
           onEnterBack: () => item.classList.add('image-visible'),
-          onLeave: () => item.classList.remove('image-visible'),
           onLeaveBack: () => item.classList.remove('image-visible')
         });
       });
@@ -391,9 +386,6 @@
       const sgSticky = sgPin.querySelector('.pin-sticky');
       const sgHeader = sgPin.querySelector('.pin-header');
 
-      // Smooth setters for values we update during scroll
-      const setFillWidth = sgFill ? gsap.quickTo(sgFill, 'width', { duration: 0.25, ease: 'sine.out' }) : null;
-
       gsap.to(sgStaged, {
         opacity: 1,
         ease: 'sine.inOut',
@@ -415,7 +407,7 @@
             const p = self.progress;
             if (sgSticky) sgSticky.style.setProperty('--progress', (p * 100) + '%');
             if (sgHeader) sgHeader.style.transform = `translateY(${p * -20}px)`;
-            if (setFillWidth) setFillWidth((p * 100) + '%');
+            if (sgFill) sgFill.style.width = (p * 100) + '%';
             if (sgLabelEmpty) sgLabelEmpty.classList.toggle('active', p < 0.5);
             if (sgLabelStaged) sgLabelStaged.classList.toggle('active', p >= 0.5);
           }
