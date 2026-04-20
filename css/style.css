@@ -41,28 +41,108 @@ body {
   position: relative;
 }
 
-/* ── Ambient topographic pattern — fills the entire page with subtle organic motion ── */
+/* ═══════════════════════════════════════════════════════════
+   AMBIENT BACKGROUND SYSTEM — 3 layers
+   Layer 1: Topographic lines (body::before) - subtle structure
+   Layer 2: Floating orbs (.orb) - drifting gold/blue glows
+   Layer 3: Noise grain (body::after) - premium texture
+═══════════════════════════════════════════════════════════ */
+
+/* ── Layer 1: Topographic pattern — slow drift, fills all "empty" space ── */
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
+  inset: -10%;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23e8a838' stroke-width='0.6' opacity='0.08'%3E%3Cpath d='M -100 400 Q 200 300 400 400 T 800 400 T 1300 400'/%3E%3Cpath d='M -100 450 Q 200 350 400 450 T 800 450 T 1300 450'/%3E%3Cpath d='M -100 350 Q 200 250 400 350 T 800 350 T 1300 350'/%3E%3Cpath d='M -100 500 Q 200 400 400 500 T 800 500 T 1300 500'/%3E%3Cpath d='M -100 300 Q 200 200 400 300 T 800 300 T 1300 300'/%3E%3Cpath d='M -100 550 Q 250 450 500 550 T 900 550 T 1300 550'/%3E%3Cpath d='M -100 250 Q 250 150 500 250 T 900 250 T 1300 250'/%3E%3Cpath d='M -100 600 Q 300 500 600 600 T 1000 600 T 1300 600'/%3E%3Cpath d='M -100 200 Q 300 100 600 200 T 1000 200 T 1300 200'/%3E%3Cpath d='M -100 650 Q 350 550 650 650 T 1050 650 T 1300 650'/%3E%3Cpath d='M -100 150 Q 350 50 650 150 T 1050 150 T 1300 150'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 100vw 100vh;
+  background-size: 110vw 110vh;
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
   z-index: 1;
-  animation: topoShift 60s ease-in-out infinite;
-  opacity: 0.8;
+  animation: topoShift 90s ease-in-out infinite;
+  opacity: 0.7;
 }
 
 @keyframes topoShift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(-2%, 1%) scale(1.02); }
-  66%      { transform: translate(1%, -1.5%) scale(1.01); }
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25%      { transform: translate(-2%, 1.5%) scale(1.03) rotate(0.5deg); }
+  50%      { transform: translate(1.5%, -1%) scale(1.01) rotate(-0.3deg); }
+  75%      { transform: translate(-1%, -2%) scale(1.02) rotate(0.2deg); }
 }
 
-/* ── Noise grain overlay ── */
+/* ── Layer 2: Floating orbs — cinematic gold/blue drift ── */
+.orb-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  will-change: transform;
+}
+
+.orb-1 {
+  width: 60vw;
+  height: 60vw;
+  top: -20vw;
+  left: -20vw;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.35), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift1 42s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 50vw;
+  height: 50vw;
+  bottom: -15vw;
+  right: -15vw;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.25), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift2 52s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 45vw;
+  height: 45vw;
+  top: 40%;
+  left: 55%;
+  background: radial-gradient(circle, rgba(77, 159, 255, 0.12), rgba(77, 159, 255, 0) 70%);
+  animation: orbDrift3 66s ease-in-out infinite;
+}
+
+.orb-4 {
+  width: 38vw;
+  height: 38vw;
+  top: 80%;
+  left: 5%;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.2), rgba(232, 168, 56, 0) 70%);
+  animation: orbDrift4 58s ease-in-out infinite;
+}
+
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(30vw, 20vh) scale(1.15); }
+  66%      { transform: translate(10vw, 50vh) scale(0.9); }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-35vw, -40vh) scale(1.2); }
+}
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%      { transform: translate(-25vw, 15vh) scale(0.85); }
+  75%      { transform: translate(15vw, -20vh) scale(1.1); }
+}
+@keyframes orbDrift4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  45%      { transform: translate(25vw, -35vh) scale(1.25); }
+}
+
+/* ── Layer 3: Noise grain ── */
 body::after {
   content: '';
   position: fixed;
@@ -357,7 +437,7 @@ nav.scrolled .nav-links {
 
 /* ═══ INTRO ═══ */
 .intro {
-  padding: 180px 48px;
+  padding: 110px 48px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -451,11 +531,11 @@ nav.scrolled .nav-links {
 
 /* ═══ FOUNDATION ═══ */
 .foundation {
-  padding: 200px 48px;
+  padding: 120px 48px;
   display: flex;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .foundation::before {
@@ -527,7 +607,7 @@ nav.scrolled .nav-links {
 
 /* ═══ SECTION HEADER (Media / Studio / Agency) ═══ */
 .section-header {
-  padding: 180px 48px 100px;
+  padding: 110px 48px 80px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -794,14 +874,57 @@ nav.scrolled .nav-links {
 
 /* ═══ CAPABILITIES GRID ═══ */
 .capabilities {
-  padding: 180px 48px;
+  padding: 110px 48px;
   max-width: 1300px;
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.capabilities::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 80%;
+  background: radial-gradient(ellipse at center,
+    rgba(232, 168, 56, 0.08) 0%,
+    rgba(232, 168, 56, 0.02) 40%,
+    transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.capabilities::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.4), transparent);
+  z-index: 0;
+  pointer-events: none;
+  animation: rayDrift 14s ease-in-out infinite;
+}
+
+@keyframes rayDrift {
+  0%, 100% { top: 25%; opacity: 0.6; }
+  50%      { top: 70%; opacity: 0.2; }
 }
 
 .cap-header {
   text-align: center;
   margin-bottom: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.cap-grid {
+  position: relative;
+  z-index: 1;
 }
 
 .cap-label {
@@ -865,12 +988,12 @@ nav.scrolled .nav-links {
 
 /* ═══ MOBILE MOMENT ═══ */
 .mobile-moment {
-  padding: 200px 48px;
+  padding: 120px 48px;
   display: flex;
   justify-content: center;
   background: linear-gradient(180deg, transparent, rgba(232, 168, 56, 0.03), transparent);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .mobile-inner {
@@ -981,11 +1104,11 @@ nav.scrolled .nav-links {
 
 /* ═══ UNIFIED MODEL ═══ */
 .unified {
-  padding: 200px 48px;
+  padding: 120px 48px;
   display: flex;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .unified::before {
@@ -1036,7 +1159,7 @@ nav.scrolled .nav-links {
 
 /* ═══ BUILT FOR ═══ */
 .built-for {
-  padding: 180px 48px;
+  padding: 110px 48px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -1144,7 +1267,7 @@ nav.scrolled .nav-links {
 
 /* ═══ CTA ═══ */
 .cta {
-  padding: 200px 48px;
+  padding: 120px 48px;
   text-align: center;
   position: relative;
 }
@@ -1280,6 +1403,17 @@ footer {
   font-size: 1.08em;
 }
 
+/* ═══ Layer content above ambient layers ═══ */
+main, section, nav, footer {
+  position: relative;
+  z-index: 3;
+}
+
+/* Nav floats above all */
+nav {
+  z-index: 1000;
+}
+
 /* ═══ SCATTER PHOTOS — ambient portfolio imagery in text sections ═══ */
 .scatter-img {
   position: absolute;
@@ -1287,17 +1421,23 @@ footer {
   border-radius: 6px;
   background: var(--bg-soft);
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px) scale(1);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .scatter-img.visible {
   opacity: 0.55;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  animation: scatterBreathe 8s ease-in-out infinite;
+}
+
+@keyframes scatterBreathe {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.08); }
 }
 
 .scatter-placeholder {
@@ -1423,12 +1563,12 @@ footer {
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
   white-space: nowrap;
-  font-size: clamp(40px, 7vw, 96px);
+  font-size: clamp(24px, 4vw, 52px);
   font-weight: 600;
   color: var(--white);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   line-height: 1;
   will-change: transform;
   width: max-content;
@@ -1436,7 +1576,7 @@ footer {
 
 .marquee-track span {
   display: inline-block;
-  padding-right: 60px;
+  padding-right: 40px;
 }
 
 .marquee-track .m-italic {
