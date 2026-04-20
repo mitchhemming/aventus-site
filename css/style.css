@@ -60,7 +60,7 @@ body::before {
   pointer-events: none;
   z-index: 1;
   animation: topoShift 70s ease-in-out infinite;
-  opacity: 1.2;
+  opacity: 0.9;
 }
 
 @keyframes topoShift {
@@ -83,7 +83,7 @@ body::before {
   position: absolute;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: 0.65;
+  opacity: 0.45;
   will-change: transform;
 }
 
@@ -92,7 +92,7 @@ body::before {
   height: 60vw;
   top: -20vw;
   left: -20vw;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.55), rgba(232, 168, 56, 0) 70%);
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.4), rgba(232, 168, 56, 0) 70%);
   animation: orbDrift1 36s ease-in-out infinite;
 }
 
@@ -101,7 +101,7 @@ body::before {
   height: 50vw;
   bottom: -15vw;
   right: -15vw;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.45), rgba(232, 168, 56, 0) 70%);
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.32), rgba(232, 168, 56, 0) 70%);
   animation: orbDrift2 44s ease-in-out infinite;
 }
 
@@ -110,7 +110,7 @@ body::before {
   height: 45vw;
   top: 40%;
   left: 55%;
-  background: radial-gradient(circle, rgba(77, 159, 255, 0.22), rgba(77, 159, 255, 0) 70%);
+  background: radial-gradient(circle, rgba(77, 159, 255, 0.15), rgba(77, 159, 255, 0) 70%);
   animation: orbDrift3 56s ease-in-out infinite;
 }
 
@@ -119,7 +119,7 @@ body::before {
   height: 38vw;
   top: 80%;
   left: 5%;
-  background: radial-gradient(circle, rgba(232, 168, 56, 0.4), rgba(232, 168, 56, 0) 70%);
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.28), rgba(232, 168, 56, 0) 70%);
   animation: orbDrift4 48s ease-in-out infinite;
 }
 
@@ -132,19 +132,19 @@ body::before {
   width: 3px;
   background: linear-gradient(180deg,
     transparent 0%,
-    rgba(232, 168, 56, 0.15) 40%,
-    rgba(232, 168, 56, 0.4) 50%,
-    rgba(232, 168, 56, 0.15) 60%,
+    rgba(232, 168, 56, 0.1) 40%,
+    rgba(232, 168, 56, 0.25) 50%,
+    rgba(232, 168, 56, 0.1) 60%,
     transparent 100%);
   filter: blur(18px);
   opacity: 0;
-  animation: rayScan 22s linear infinite;
+  animation: rayScan 28s linear infinite;
 }
 
 @keyframes rayScan {
   0%    { left: -10%; opacity: 0; }
-  10%   { opacity: 0.9; }
-  90%   { opacity: 0.9; }
+  15%   { opacity: 0.6; }
+  85%   { opacity: 0.6; }
   100%  { left: 110%; opacity: 0; }
 }
 
@@ -326,9 +326,11 @@ nav.scrolled .nav-links {
   background:
     linear-gradient(180deg,
       rgba(6,6,11,0) 0%,
-      rgba(6,6,11,0) 55%,
-      rgba(6,6,11,0.75) 95%,
+      rgba(6,6,11,0) 50%,
+      rgba(6,6,11,0.4) 80%,
+      rgba(6,6,11,0.85) 95%,
       rgba(6,6,11,1) 100%);
+  pointer-events: none;
 }
 
 .hero-content {
@@ -656,6 +658,12 @@ nav.scrolled .nav-links {
   text-transform: uppercase;
 }
 
+/* Variant for shorter headings like "AI Enhancement" - scales font to prevent wrap */
+.section-heading-short {
+  font-size: clamp(48px, 9vw, 140px);
+  white-space: nowrap;
+}
+
 .section-sub {
   font-size: clamp(16px, 1.6vw, 22px);
   color: var(--white-dim);
@@ -741,7 +749,7 @@ nav.scrolled .nav-links {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 48px 40px;
+  padding: 80px 48px 80px;
   width: 100%;
   position: relative;
   --progress: 0%;
@@ -908,7 +916,7 @@ nav.scrolled .nav-links {
   border-radius: 1px;
 }
 
-/* Pin scan line - sweeps across the frame during transitions */
+/* Pin scan line - follows the edge of the clip-path reveal */
 .pin-scan {
   position: absolute;
   top: 0;
@@ -922,7 +930,8 @@ nav.scrolled .nav-links {
   z-index: 5;
   opacity: 0;
   pointer-events: none;
-  will-change: transform, opacity;
+  transform: translateX(-50%);
+  will-change: left, opacity;
 }
 
 /* ═══ CAPABILITIES GRID ═══ */
@@ -1518,14 +1527,9 @@ footer {
 }
 
 /* ═══ Layer content above ambient layers ═══ */
-main, section, nav, footer {
+main, section, footer {
   position: relative;
   z-index: 3;
-}
-
-/* Nav floats above all */
-nav {
-  z-index: 1000;
 }
 
 /* ═══ SCATTER PHOTOS — ambient portfolio imagery in text sections ═══ */
@@ -1677,9 +1681,9 @@ nav {
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
   white-space: nowrap;
-  font-size: clamp(18px, 2.6vw, 34px);
+  font-size: clamp(22px, 3.2vw, 42px);
   font-weight: 600;
   color: var(--white);
   letter-spacing: -0.005em;
@@ -1690,7 +1694,7 @@ nav {
 
 .marquee-track span {
   display: inline-block;
-  padding-right: 32px;
+  padding-right: 36px;
 }
 
 .marquee-track .m-gold-italic,
