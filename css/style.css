@@ -590,6 +590,7 @@ body.scrolled .hero-scroll-indicator {
   text-align: center;
   padding: 32px 20px;
   position: relative;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(50px);
   transition:
@@ -614,8 +615,31 @@ body.scrolled .hero-scroll-indicator {
   transition: height 1s cubic-bezier(0.16, 1, 0.3, 1) 3s;
 }
 
+.intro-ghost {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(58px, 7.5vw, 116px);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: rgba(236, 232, 224, 0.14);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition:
+    opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .intro-verb {
   display: block;
+  position: relative;
+  z-index: 1;
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 500;
@@ -624,10 +648,13 @@ body.scrolled .hero-scroll-indicator {
   line-height: 0.95;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
+  margin-top: 36px;
 }
 
 .intro-brand {
   display: block;
+  position: relative;
+  z-index: 1;
   font-size: clamp(11px, 1vw, 15px);
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -651,6 +678,11 @@ body.scrolled .hero-scroll-indicator {
 #introBlock.visible .intro-col {
   opacity: 1;
   transform: translateY(0);
+}
+
+#introBlock.visible .intro-ghost {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 #introBlock.visible .intro-col + .intro-col::before {
@@ -2561,6 +2593,10 @@ main, section, footer {
   .intro-verb {
     font-size: clamp(48px, 14vw, 80px);
     margin-bottom: 12px;
+    margin-top: 28px;
+  }
+  .intro-ghost {
+    font-size: clamp(56px, 17vw, 92px);
   }
   .intro-brand {
     letter-spacing: 3px;
