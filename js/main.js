@@ -91,6 +91,49 @@
     });
   }
 
+  // ═══ METRIC ROWS — staggered reveal + vertical scan line growth ═══
+  const metricsSection = document.querySelector('.agency-metrics');
+  const metricScan = document.querySelector('.metric-scan');
+  if (metricsSection) {
+    // Stagger row visibility on scroll
+    const metricRows = metricsSection.querySelectorAll('.metric-row');
+    metricRows.forEach((row) => {
+      ScrollTrigger.create({
+        trigger: row,
+        start: 'top 85%',
+        onEnter: () => {
+          row.classList.add('visible');
+          row.querySelectorAll('.counter').forEach(animateCounter);
+        },
+        once: true
+      });
+    });
+
+    // Vertical scan line grows as scroll passes through section
+    if (metricScan) {
+      ScrollTrigger.create({
+        trigger: metricsSection,
+        start: 'top 70%',
+        end: 'bottom 80%',
+        scrub: 0.5,
+        onUpdate: (self) => {
+          metricScan.style.height = (self.progress * 100) + '%';
+        }
+      });
+    }
+  }
+
+  // ═══ UNIFIED HEADING — cinematic entrance (4 directions staggered) ═══
+  const unifiedHeading = document.getElementById('unifiedHeading');
+  if (unifiedHeading) {
+    ScrollTrigger.create({
+      trigger: unifiedHeading,
+      start: 'top 78%',
+      onEnter: () => unifiedHeading.classList.add('visible'),
+      once: true
+    });
+  }
+
   // ═══ MARQUEE ═══
   gsap.utils.toArray('.marquee-track').forEach((track) => {
     const direction = track.dataset.direction === 'right' ? 1 : -1;
@@ -125,6 +168,74 @@
 
   // ═══ PINNED SECTIONS ═══
   function initPinnedSections() {
+
+    // ─── CAPABILITIES: Staggered before/after reveal on scroll ───
+    const capPin = document.getElementById('capPin');
+    if (capPin) {
+      const capItems = Array.from(capPin.querySelectorAll('.cap-item'));
+      const totalTiles = capItems.length;
+
+      // Prepare each tile's layers we'll drive directly
+      const tileData = capItems.map((item) => ({
+        item,
+        after: item.querySelector('.cap-after'),
+        scan: item.querySelector('.cap-scan')
+      }));
+
+      ScrollTrigger.create({
+        trigger: capPin,
+        start: 'top top',
+        end: '+=' + (totalTiles * 280 + 400),
+        scrub: 0.8,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const p = self.progress;
+          // Active zone is 0.08 → 0.90, each tile gets equal share
+          const activeP = Math.max(0, Math.min(1, (p - 0.08) / 0.82));
+          const tileShare = 1 / totalTiles;
+
+          tileData.forEach(({ after, scan }, i) => {
+            const tileStart = i * tileShare;
+            const tileEnd = (i + 1) * tileShare;
+
+            // Local progress within this tile's reveal window (0 → 1)
+            let local = 0;
+            if (activeP >= tileEnd) local = 1;
+            else if (activeP > tileStart) local = (activeP - tileStart) / tileShare;
+
+            // Apply clip-path to after image
+            if (after) {
+              after.style.clipPath = `inset(0 ${(1 - local) * 100}% 0 0)`;
+            }
+
+            // Scan line follows the clip edge during the active window
+            if (scan) {
+              if (local > 0 && local < 1) {
+                scan.style.opacity = 1;
+                scan.style.left = (local * 100) + '%';
+              } else {
+                scan.style.opacity = 0;
+                scan.style.left = (local * 100) + '%';
+              }
+            }
+          });
+        },
+        onLeave: () => {
+          // Lock all to revealed when leaving
+          tileData.forEach(({ after, scan, item }) => {
+            if (after) after.style.clipPath = 'inset(0 0% 0 0)';
+            if (scan) scan.style.opacity = 0;
+            item.classList.add('revealed');
+          });
+        },
+        onEnterBack: () => {
+          capItems.forEach((item) => item.classList.remove('revealed'));
+        }
+      });
+    }
+
+    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
 
     // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
     const tsPin = document.getElementById('tsPin');
