@@ -1,29 +1,12 @@
 /* ═══════════════════════════════════════════════════════════
    AVENTUS — Main JS
-   Lenis smooth scroll + GSAP ScrollTrigger animations
-   + clickable pin state labels + scan line sync
+   Native browser scroll + GSAP ScrollTrigger animations
 ═══════════════════════════════════════════════════════════ */
 
 (function() {
   'use strict';
 
   gsap.registerPlugin(ScrollTrigger);
-
-  // ═══ LENIS SMOOTH SCROLL ═══
-  let lenis = null;
-  if (typeof Lenis !== 'undefined') {
-    lenis = new Lenis({
-      duration: 0.8,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      smoothWheel: true,
-      wheelMultiplier: 1.2,
-      touchMultiplier: 2,
-      lerp: 0.1,
-    });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
 
   // ═══ NAV SCROLL STATE ═══
   const nav = document.getElementById('nav');
