@@ -1787,15 +1787,55 @@ footer {
 /* ═══ REVEAL SYSTEM ═══ */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(60px);
   transition:
-    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Dramatic headings - larger translate with subtle scale */
+h1.reveal, h2.reveal,
+.section-heading.reveal,
+.cap-heading.reveal,
+.bf-heading.reveal,
+.foundation-heading.reveal,
+.unified-heading.reveal,
+.cta-heading.reveal,
+.mobile-heading.reveal,
+.pin-heading.reveal {
+  transform: translateY(80px) scale(0.96);
+  transition:
+    opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+h1.reveal.visible, h2.reveal.visible,
+.section-heading.reveal.visible,
+.cap-heading.reveal.visible,
+.bf-heading.reveal.visible,
+.foundation-heading.reveal.visible,
+.unified-heading.reveal.visible,
+.cta-heading.reveal.visible,
+.mobile-heading.reveal.visible,
+.pin-heading.reveal.visible {
+  transform: translateY(0) scale(1);
+}
+
+/* Labels slide in from below with slight delay */
+.section-label.reveal,
+.cap-label.reveal,
+.bf-label.reveal,
+.mobile-label.reveal,
+.foundation-label.reveal {
+  transform: translateY(30px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── Editorial italic serif accent for emphasis words ── */
