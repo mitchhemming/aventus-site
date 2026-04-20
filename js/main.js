@@ -1,13 +1,35 @@
 /* ═══════════════════════════════════════════════════════════
    AVENTUS — Main JS
-   GSAP + ScrollTrigger scroll animations
-   + ambient motion during pinned sections
+   Lenis smooth scroll + GSAP ScrollTrigger animations
 ═══════════════════════════════════════════════════════════ */
 
 (function() {
   'use strict';
 
   gsap.registerPlugin(ScrollTrigger);
+
+  // ═══ LENIS SMOOTH SCROLL ═══
+  // Creates the premium "slight resistance" scroll feel
+  let lenis = null;
+
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    // Sync Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+  }
 
   // ═══ NAV SCROLL STATE ═══
   const nav = document.getElementById('nav');
@@ -66,6 +88,39 @@
     });
   }
 
+  // ═══ HORIZONTAL MARQUEE SCROLL ═══
+  // Marquee text strips that move horizontally as user scrolls vertically
+  gsap.utils.toArray('.marquee-track').forEach((track) => {
+    const direction = track.dataset.direction === 'right' ? 1 : -1;
+    const speed = parseFloat(track.dataset.speed || '1');
+
+    gsap.to(track, {
+      xPercent: direction * 100 * speed,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: track.closest('.marquee'),
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5,
+      }
+    });
+  });
+
+  // ═══ PARALLAX ELEMENTS ═══
+  gsap.utils.toArray('[data-parallax]').forEach((el) => {
+    const speed = parseFloat(el.dataset.parallax || '0.3');
+    gsap.to(el, {
+      yPercent: speed * -30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1
+      }
+    });
+  });
+
   // ═══ PINNED SECTIONS — Initialized after window load ═══
   function initPinnedSections() {
 
@@ -85,8 +140,8 @@
         scrollTrigger: {
           trigger: tsPin,
           start: 'top top',
-          end: '+=2000',
-          scrub: 0.8,
+          end: '+=2400',
+          scrub: 1.2,
           pin: true,
           anticipatePin: 1,
           onEnter: () => tsPin.classList.add('is-pinned'),
@@ -95,17 +150,12 @@
           onLeaveBack: () => tsPin.classList.remove('is-pinned'),
           onUpdate: (self) => {
             const p = self.progress;
-
-            // Progress bar at top of sticky
             if (tsSticky) tsSticky.style.setProperty('--progress', (p * 100) + '%');
+            if (tsHeader) tsHeader.style.transform = `translateY(${p * -20}px)`;
 
-            // Subtle header drift
-            if (tsHeader) tsHeader.style.transform = `translateY(${p * -16}px)`;
-
-            // State labels
             let active = 'day';
             if (p >= 0.6) active = 'twilight';
-            else if (p >= 0.25) active = 'golden';
+            else if (p >= 0.28) active = 'golden';
             tsLabelDay.classList.toggle('active', active === 'day');
             tsLabelGolden.classList.toggle('active', active === 'golden');
             tsLabelTwilight.classList.toggle('active', active === 'twilight');
@@ -113,12 +163,13 @@
         }
       });
 
+      // Smoother fade timing - more gradual transitions, less "snap"
       tsTl
-        .to({}, { duration: 0.15 })
-        .to(tsGolden, { opacity: 1, duration: 0.3, ease: 'power1.inOut' })
-        .to({}, { duration: 0.15 })
-        .to(tsTwilight, { opacity: 1, duration: 0.3, ease: 'power1.inOut' })
-        .to({}, { duration: 0.1 });
+        .to({}, { duration: 0.12 })
+        .to(tsGolden, { opacity: 1, duration: 0.38, ease: 'sine.inOut' })
+        .to({}, { duration: 0.10 })
+        .to(tsTwilight, { opacity: 1, duration: 0.38, ease: 'sine.inOut' })
+        .to({}, { duration: 0.12 });
     }
 
     // ─── STAGING DEMO: Empty → Styled ───
@@ -134,12 +185,12 @@
 
       gsap.to(sgStaged, {
         opacity: 1,
-        ease: 'power1.inOut',
+        ease: 'sine.inOut',
         scrollTrigger: {
           trigger: sgPin,
           start: 'top top',
-          end: '+=1600',
-          scrub: 0.8,
+          end: '+=1800',
+          scrub: 1.2,
           pin: true,
           anticipatePin: 1,
           onEnter: () => sgPin.classList.add('is-pinned'),
@@ -148,9 +199,8 @@
           onLeaveBack: () => sgPin.classList.remove('is-pinned'),
           onUpdate: (self) => {
             const p = self.progress;
-
             if (sgSticky) sgSticky.style.setProperty('--progress', (p * 100) + '%');
-            if (sgHeader) sgHeader.style.transform = `translateY(${p * -16}px)`;
+            if (sgHeader) sgHeader.style.transform = `translateY(${p * -20}px)`;
             if (sgFill) sgFill.style.width = (p * 100) + '%';
             if (sgLabelEmpty) sgLabelEmpty.classList.toggle('active', p < 0.5);
             if (sgLabelStaged) sgLabelStaged.classList.toggle('active', p >= 0.5);
