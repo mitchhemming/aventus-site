@@ -266,6 +266,16 @@ nav.scrolled .nav-links {
   background-size: cover;
   background-position: center;
   will-change: clip-path, opacity;
+  -webkit-mask-image: linear-gradient(180deg,
+    black 0%,
+    black 70%,
+    rgba(0,0,0,0.5) 90%,
+    transparent 100%);
+  mask-image: linear-gradient(180deg,
+    black 0%,
+    black 70%,
+    rgba(0,0,0,0.5) 90%,
+    transparent 100%);
 }
 
 .hero-img.twilight { z-index: 1; }
@@ -907,6 +917,11 @@ nav.scrolled .nav-links {
   width: 100%;
 }
 
+/* Remove underline bar from Virtual Staging progress labels since we have the center bar */
+.pin-progress .pin-state::after {
+  display: none;
+}
+
 .pin-progress {
   display: flex;
   align-items: center;
@@ -1229,8 +1244,8 @@ nav.scrolled .nav-links {
 
 .metric-row {
   display: grid;
-  grid-template-columns: 280px 240px 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(320px, auto) minmax(200px, 260px) 1fr;
+  gap: 48px;
   align-items: baseline;
   padding: 56px 0;
   border-top: 1px solid var(--white-faint);
