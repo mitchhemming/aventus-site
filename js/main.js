@@ -54,6 +54,16 @@
     });
   });
 
+  // ═══ SCATTER PHOTOS REVEAL ═══
+  gsap.utils.toArray('.scatter-img').forEach((el) => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 95%',
+      onEnter: () => el.classList.add('visible'),
+      once: true
+    });
+  });
+
   gsap.utils.toArray('.counter').forEach((el) => {
     const parent = el.closest('.reveal');
     if (!parent) {
