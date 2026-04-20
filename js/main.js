@@ -381,8 +381,8 @@
         scrollTrigger: {
           trigger: sgPin,
           start: 'top top',
-          end: '+=1800',
-          scrub: 1.2,
+          end: '+=1200',
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
           onEnter: () => sgPin.classList.add('is-pinned'),
