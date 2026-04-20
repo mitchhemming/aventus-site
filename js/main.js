@@ -38,7 +38,7 @@
   gsap.utils.toArray('.reveal').forEach((el) => {
     ScrollTrigger.create({
       trigger: el,
-      start: 'top 88%',
+      start: 'top 92%',
       onEnter: () => {
         el.classList.add('visible');
         el.querySelectorAll('.counter').forEach(animateCounter);
@@ -52,7 +52,7 @@
     if (!parent) {
       ScrollTrigger.create({
         trigger: el,
-        start: 'top 88%',
+        start: 'top 92%',
         onEnter: () => animateCounter(el),
         once: true
       });
@@ -134,6 +134,45 @@
     });
   }
 
+  // ═══ INTRO STATEMENT — word-by-word reveal ═══
+  const introText = document.getElementById('introText');
+  if (introText) {
+    // Wrap every text word in a span, preserving child element structure (em tags)
+    function wrapWords(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        const frag = document.createDocumentFragment();
+        const tokens = text.split(/(\s+)/);
+        tokens.forEach(token => {
+          if (token.trim() === '') {
+            frag.appendChild(document.createTextNode(token));
+          } else {
+            const span = document.createElement('span');
+            span.className = 'intro-word';
+            span.textContent = token;
+            frag.appendChild(span);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(wrapWords);
+      }
+    }
+    wrapWords(introText);
+
+    const words = introText.querySelectorAll('.intro-word');
+    words.forEach((w, i) => {
+      w.style.transitionDelay = (i * 0.04) + 's';
+    });
+
+    ScrollTrigger.create({
+      trigger: introText,
+      start: 'top 82%',
+      onEnter: () => introText.classList.add('words-in'),
+      once: true
+    });
+  }
+
   // ═══ MARQUEE ═══
   gsap.utils.toArray('.marquee-track').forEach((track) => {
     const direction = track.dataset.direction === 'right' ? 1 : -1;
@@ -169,13 +208,11 @@
   // ═══ PINNED SECTIONS ═══
   function initPinnedSections() {
 
-    // ─── CAPABILITIES: Staggered before/after reveal on scroll ───
+    // ─── CAPABILITIES: Staggered before/after reveal on scroll (no pin) ───
     const capPin = document.getElementById('capPin');
     if (capPin) {
       const capItems = Array.from(capPin.querySelectorAll('.cap-item'));
       const totalTiles = capItems.length;
-
-      // Prepare each tile's layers we'll drive directly
       const tileData = capItems.map((item) => ({
         item,
         after: item.querySelector('.cap-after'),
@@ -184,32 +221,27 @@
 
       ScrollTrigger.create({
         trigger: capPin,
-        start: 'top top',
-        end: '+=' + (totalTiles * 280 + 400),
+        start: 'top 75%',
+        end: 'bottom 40%',
         scrub: 0.8,
-        pin: true,
-        anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress;
-          // Active zone is 0.08 → 0.90, each tile gets equal share
-          const activeP = Math.max(0, Math.min(1, (p - 0.08) / 0.82));
+          // Active zone: 0.1 → 0.9 (lead-in and hold at end)
+          const activeP = Math.max(0, Math.min(1, (p - 0.1) / 0.8));
           const tileShare = 1 / totalTiles;
 
           tileData.forEach(({ after, scan }, i) => {
             const tileStart = i * tileShare;
             const tileEnd = (i + 1) * tileShare;
 
-            // Local progress within this tile's reveal window (0 → 1)
             let local = 0;
             if (activeP >= tileEnd) local = 1;
             else if (activeP > tileStart) local = (activeP - tileStart) / tileShare;
 
-            // Apply clip-path to after image
             if (after) {
               after.style.clipPath = `inset(0 ${(1 - local) * 100}% 0 0)`;
             }
 
-            // Scan line follows the clip edge during the active window
             if (scan) {
               if (local > 0 && local < 1) {
                 scan.style.opacity = 1;
@@ -220,20 +252,11 @@
               }
             }
           });
-        },
-        onLeave: () => {
-          // Lock all to revealed when leaving
-          tileData.forEach(({ after, scan, item }) => {
-            if (after) after.style.clipPath = 'inset(0 0% 0 0)';
-            if (scan) scan.style.opacity = 0;
-            item.classList.add('revealed');
-          });
-        },
-        onEnterBack: () => {
-          capItems.forEach((item) => item.classList.remove('revealed'));
         }
       });
     }
+
+    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
 
     // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
 
