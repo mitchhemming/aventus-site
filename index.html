@@ -19,6 +19,7 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
   <div class="orb orb-4"></div>
+  <div class="orb-ray"></div>
 </div>
 
 <!-- ═══ NAV ═══ -->
@@ -42,7 +43,7 @@
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <img src="img/logo-aventus-bold.png" alt="AVENTUS" class="hero-title">
-    <p class="hero-sub">Premium Content <span class="hero-dot">·</span> AI Technology <span class="hero-dot">·</span> Paid Marketing</p>
+    <p class="hero-sub">Premium Content <span class="hero-dot" aria-hidden="true"></span> AI Technology <span class="hero-dot" aria-hidden="true"></span> Paid Marketing</p>
   </div>
   <div class="hero-scroll-indicator" aria-hidden="true">
     <span class="hero-scroll-label">Scroll</span>
@@ -108,21 +109,41 @@
 <!-- ═══ MARQUEE: Between Foundation & Media ═══ -->
 <section class="marquee" aria-hidden="true">
   <div class="marquee-track" data-direction="left" data-speed="1">
-    <span>Premium Content</span>
-    <span class="m-dot">●</span>
-    <span class="m-italic">AI Technology</span>
-    <span class="m-dot">●</span>
-    <span>Paid Marketing</span>
-    <span class="m-dot">●</span>
-    <span class="m-italic">Automotive</span>
-    <span class="m-dot">●</span>
-    <span>Real Estate</span>
-    <span class="m-dot">●</span>
-    <span class="m-italic">Premium Content</span>
+    <span class="m-gold-italic">Photography</span>
     <span class="m-dot">●</span>
     <span>AI Technology</span>
     <span class="m-dot">●</span>
-    <span class="m-italic">Paid Marketing</span>
+    <span class="m-gold-italic">Videography</span>
+    <span class="m-dot">●</span>
+    <span>Paid Marketing</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Automotive</span>
+    <span class="m-dot">●</span>
+    <span>Real Estate</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Photography</span>
+    <span class="m-dot">●</span>
+    <span>AI Technology</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Videography</span>
+    <span class="m-dot">●</span>
+    <span>Paid Marketing</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Automotive</span>
+    <span class="m-dot">●</span>
+    <span>Real Estate</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Photography</span>
+    <span class="m-dot">●</span>
+    <span>AI Technology</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Videography</span>
+    <span class="m-dot">●</span>
+    <span>Paid Marketing</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Automotive</span>
+    <span class="m-dot">●</span>
+    <span>Real Estate</span>
     <span class="m-dot">●</span>
   </div>
 </section>
@@ -130,7 +151,7 @@
 <!-- ═══ 5. MEDIA HEADER ═══ -->
 <section class="section-header" id="media">
   <span class="section-label reveal">Aventus Media</span>
-  <h2 class="section-heading reveal" style="transition-delay:0.1s">Conceptualise<br>and Capture.</h2>
+  <h2 class="section-heading reveal" style="transition-delay:0.1s">Conceptualise<br>and <em class="accent-serif">Capture.</em></h2>
   <p class="section-sub reveal" style="transition-delay:0.2s">Content creation, built for the world's most demanding industries.</p>
 </section>
 
@@ -155,21 +176,21 @@
 <!-- ═══ 7. STUDIO HEADER ═══ -->
 <section class="section-header" id="studio">
   <span class="section-label reveal">Aventus Studio</span>
-  <h2 class="section-heading reveal" style="transition-delay:0.1s">Enhance and<br>Engineer.</h2>
-  <p class="section-sub reveal" style="transition-delay:0.2s">AI and software that transforms how visual content gets made.</p>
+  <h2 class="section-heading reveal" style="transition-delay:0.1s">AI <em class="accent-serif">Enhancement.</em></h2>
+  <p class="section-sub reveal" style="transition-delay:0.2s">Software that transforms content.</p>
 </section>
 
 <!-- ═══ 8. STUDIO DEMO: DAYLIGHT → GOLDEN → TWILIGHT (pinned) ═══ -->
 <section class="pin-wrap" id="tsPin" data-pin-height="3">
   <div class="pin-sticky">
     <div class="pin-header">
-      <span class="pin-label">Daylight · Golden Hour · Twilight</span>
-      <h2 class="pin-heading">Every image. At any hour.</h2>
+      <h2 class="pin-heading">Every image. <em class="accent-serif">At any hour.</em></h2>
     </div>
     <div class="pin-frame">
       <div class="pin-layer" style="background-image:url('img/house-day.jpg')"></div>
       <div class="pin-layer" id="tsGolden" style="background-image:url('img/house-golden.jpg');opacity:0"></div>
       <div class="pin-layer" id="tsTwilight" style="background-image:url('img/house-twilight.jpg');opacity:0"></div>
+      <div class="pin-scan" id="tsScan"></div>
     </div>
     <div class="pin-states">
       <span class="pin-state active" data-state="day" id="tsLabelDay">Daylight</span>
@@ -218,17 +239,17 @@
 <section class="pin-wrap" id="sgPin" data-pin-height="2.5">
   <div class="pin-sticky">
     <div class="pin-header">
-      <span class="pin-label pin-label-blue">Virtual Staging Engine</span>
-      <h2 class="pin-heading">Empty to Styled.</h2>
+      <span class="pin-label">Virtual Staging Engine</span>
+      <h2 class="pin-heading">Empty to <em class="accent-serif">Styled.</em></h2>
     </div>
     <div class="pin-frame">
       <div class="pin-layer" style="background-image:url('img/room-empty.jpg')"></div>
       <div class="pin-layer" id="sgStaged" style="background-image:url('img/room-staged.jpg');opacity:0"></div>
     </div>
     <div class="pin-progress">
-      <span class="pin-state active" id="sgLabelEmpty">Empty</span>
+      <span class="pin-state active" data-state="empty" id="sgLabelEmpty">Empty</span>
       <div class="pin-progress-bar"><div class="pin-progress-fill" id="sgProgressFill"></div></div>
-      <span class="pin-state" id="sgLabelStaged">Styled</span>
+      <span class="pin-state" data-state="staged" id="sgLabelStaged">Styled</span>
     </div>
   </div>
 </section>
@@ -257,7 +278,7 @@
     </h2>
     <p class="mobile-time reveal" style="transition-delay:0.2s">60 seconds. From your phone.</p>
     <p class="mobile-body reveal" style="transition-delay:0.3s">
-      Every Studio capability, available in the Aventus mobile app. Shoot a property or vehicle, select your enhancement, and the finished image is yours in under a minute.
+      Every enhancement available in the Aventus Studio app. Shoot with your phone, select your enhancement, and download in under 60 seconds.
     </p>
   </div>
 </section>
@@ -265,8 +286,8 @@
 <!-- ═══ 12. AGENCY HEADER ═══ -->
 <section class="section-header" id="agency">
   <span class="section-label reveal">Aventus Agency</span>
-  <h2 class="section-heading reveal" style="transition-delay:0.1s">Deploy<br>and Scale.</h2>
-  <p class="section-sub reveal" style="transition-delay:0.2s">Content without deployment is just a portfolio. We handle both.</p>
+  <h2 class="section-heading reveal" style="transition-delay:0.1s">Deploy<br>and <em class="accent-serif">Scale.</em></h2>
+  <p class="section-sub reveal" style="transition-delay:0.2s">Content without deployment is just a portfolio. <em class="accent-serif">We handle both.</em></p>
 </section>
 
 <!-- ═══ 13. AGENCY PERFORMANCE METRICS ═══ -->
@@ -296,21 +317,37 @@
 <!-- ═══ MARQUEE: Between Agency & Unified ═══ -->
 <section class="marquee marquee-dark" aria-hidden="true">
   <div class="marquee-track" data-direction="right" data-speed="1">
-    <span class="m-italic">One Platform</span>
-    <span class="m-dot">●</span>
-    <span>Three Divisions</span>
-    <span class="m-dot">●</span>
-    <span class="m-italic">End-to-End</span>
-    <span class="m-dot">●</span>
     <span>Media</span>
     <span class="m-dot">●</span>
-    <span class="m-italic">Studio</span>
+    <span class="m-gold-italic">Studio</span>
     <span class="m-dot">●</span>
     <span>Agency</span>
     <span class="m-dot">●</span>
-    <span class="m-italic">One Platform</span>
+    <span class="m-gold-italic">Brisbane</span>
     <span class="m-dot">●</span>
-    <span>Three Divisions</span>
+    <span>One Platform</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Three Divisions</span>
+    <span class="m-dot">●</span>
+    <span>Media</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Studio</span>
+    <span class="m-dot">●</span>
+    <span>Agency</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Brisbane</span>
+    <span class="m-dot">●</span>
+    <span>One Platform</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Three Divisions</span>
+    <span class="m-dot">●</span>
+    <span>Media</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Studio</span>
+    <span class="m-dot">●</span>
+    <span>Agency</span>
+    <span class="m-dot">●</span>
+    <span class="m-gold-italic">Brisbane</span>
     <span class="m-dot">●</span>
   </div>
 </section>
@@ -329,13 +366,13 @@
 
   <div class="unified-inner">
     <h2 class="unified-heading reveal">
-      Most companies do<br>
-      <em class="accent-serif">one of these things.</em><br>
-      We do all three.<br>
-      <em class="accent-serif">As one system.</em>
+      Great content.<br>
+      <em class="accent-serif">Smart technology.</em><br>
+      Proven advertising.<br>
+      <em class="accent-serif">All three. One system.</em>
     </h2>
     <p class="unified-body reveal" style="transition-delay:0.2s">
-      Content created in a silo doesn't perform. Content without deployment doesn't convert. Technology without production knowledge doesn't sell. Aventus is built so these never happen.
+      Great content, smart technology, and proven advertising — most companies do one. We do all three.
     </p>
   </div>
 </section>
@@ -344,24 +381,56 @@
 <section class="built-for">
   <div class="bf-header">
     <span class="bf-label reveal">Built For</span>
-    <h2 class="bf-heading reveal" style="transition-delay:0.1s">Who we work with.</h2>
+    <h2 class="bf-heading reveal" style="transition-delay:0.1s">Who <em class="accent-serif">we work with.</em></h2>
   </div>
   <div class="bf-grid">
     <div class="bf-item reveal">
-      <h3>Automotive Dealerships</h3>
-      <p>Consistent, high-volume listing content. AI-enhanced in minutes, not days.</p>
+      <span class="bf-num">01</span>
+      <h3>Automotive<br>Dealerships</h3>
+      <p>High-volume listing content, AI-enhanced in minutes. Built for showroom-to-sold velocity.</p>
+      <ul class="bf-services">
+        <li>Vehicle Photography</li>
+        <li>Video Walkarounds</li>
+        <li>AI Enhancement</li>
+        <li>Paid Campaigns</li>
+        <li>Social Content</li>
+      </ul>
     </div>
     <div class="bf-item reveal" style="transition-delay:0.1s">
-      <h3>Real Estate Agencies</h3>
-      <p>Premium property visuals that make listings stand out. With deployment to match.</p>
+      <span class="bf-num">02</span>
+      <h3>Real Estate<br>Agencies</h3>
+      <p>Premium property visuals with the deployment to match. Listings that convert faster.</p>
+      <ul class="bf-services">
+        <li>Property Photography</li>
+        <li>Twilight Editing</li>
+        <li>Virtual Staging</li>
+        <li>Declutter</li>
+        <li>Listing Campaigns</li>
+      </ul>
     </div>
     <div class="bf-item reveal" style="transition-delay:0.2s">
-      <h3>Developers &amp; Projects</h3>
+      <span class="bf-num">03</span>
+      <h3>Developers<br>&amp; Projects</h3>
       <p>End-to-end content strategy for launches, showcases, and ongoing marketing.</p>
+      <ul class="bf-services">
+        <li>Aerial &amp; Drone</li>
+        <li>Architectural Photography</li>
+        <li>Editorial Video</li>
+        <li>Launch Campaigns</li>
+        <li>Ongoing Content</li>
+      </ul>
     </div>
     <div class="bf-item reveal" style="transition-delay:0.3s">
-      <h3>Automotive &amp; Lifestyle Brands</h3>
-      <p>Editorial campaigns, event coverage, and paid media that performs.</p>
+      <span class="bf-num">04</span>
+      <h3>Lifestyle<br>Brands</h3>
+      <p>Editorial campaigns, event coverage, and paid media that performs across every channel.</p>
+      <ul class="bf-services">
+        <li>Commercial Photography</li>
+        <li>Brand Video</li>
+        <li>Event Coverage</li>
+        <li>Social Campaigns</li>
+        <li>Production</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -392,7 +461,7 @@
 <section class="cta" id="contact">
   <div class="cta-inner">
     <h2 class="cta-heading reveal">Let's Build Something.</h2>
-    <p class="cta-sub reveal" style="transition-delay:0.1s">Photography, technology, and deployment. All under one roof.</p>
+    <p class="cta-sub reveal" style="transition-delay:0.1s">Content, technology, and deployment. All under one roof.</p>
     <a href="mailto:Bookings@AventusMedia.com.au" class="cta-email reveal" style="transition-delay:0.2s">Bookings@AventusMedia.com.au</a>
   </div>
 </section>
