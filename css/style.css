@@ -590,7 +590,6 @@ body.scrolled .hero-scroll-indicator {
   text-align: center;
   padding: 32px 20px;
   position: relative;
-  overflow: hidden;
   opacity: 0;
   transform: translateY(50px);
   transition:
@@ -622,7 +621,7 @@ body.scrolled .hero-scroll-indicator {
   transform: translateX(-50%) translateY(20px);
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(58px, 7.5vw, 116px);
+  font-size: clamp(38px, 5.2vw, 78px);
   letter-spacing: -0.05em;
   line-height: 1;
   text-transform: uppercase;
@@ -648,7 +647,7 @@ body.scrolled .hero-scroll-indicator {
   line-height: 0.95;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
-  margin-top: 36px;
+  margin-top: 24px;
 }
 
 .intro-brand {
@@ -2593,10 +2592,10 @@ main, section, footer {
   .intro-verb {
     font-size: clamp(48px, 14vw, 80px);
     margin-bottom: 12px;
-    margin-top: 28px;
+    margin-top: 18px;
   }
   .intro-ghost {
-    font-size: clamp(56px, 17vw, 92px);
+    font-size: clamp(38px, 11vw, 64px);
   }
   .intro-brand {
     letter-spacing: 3px;
