@@ -102,16 +102,16 @@
   // Marquee text strips that move horizontally as user scrolls vertically
   gsap.utils.toArray('.marquee-track').forEach((track) => {
     const direction = track.dataset.direction === 'right' ? 1 : -1;
-    const speed = parseFloat(track.dataset.speed || '1');
+    const speed = parseFloat(track.dataset.speed || '0.5');
 
     gsap.to(track, {
-      xPercent: direction * 100 * speed,
+      xPercent: direction * 60 * speed,
       ease: 'none',
       scrollTrigger: {
         trigger: track.closest('.marquee'),
         start: 'top bottom',
         end: 'bottom top',
-        scrub: 1.5,
+        scrub: 2.5,
       }
     });
   });
