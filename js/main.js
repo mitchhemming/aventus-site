@@ -126,7 +126,7 @@
   // ═══ PINNED SECTIONS ═══
   function initPinnedSections() {
 
-    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight ───
+    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
     const tsPin = document.getElementById('tsPin');
     const tsGolden = document.getElementById('tsGolden');
     const tsTwilight = document.getElementById('tsTwilight');
@@ -139,63 +139,78 @@
       const tsSticky = tsPin.querySelector('.pin-sticky');
       const tsHeader = tsPin.querySelector('.pin-header');
 
-      // Scroll-driven timeline
-      const tsTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: tsPin,
-          start: 'top top',
-          end: '+=2400',
-          scrub: 1.2,
-          pin: true,
-          anticipatePin: 1,
-          onEnter: () => tsPin.classList.add('is-pinned'),
-          onEnterBack: () => tsPin.classList.add('is-pinned'),
-          onLeave: () => {
-            tsPin.classList.remove('is-pinned');
-            tsPin.classList.add('pin-complete');
-          },
-          onLeaveBack: () => tsPin.classList.remove('is-pinned'),
-          onUpdate: (self) => {
-            const p = self.progress;
-            if (tsSticky) tsSticky.style.setProperty('--progress', (p * 100) + '%');
-            if (tsHeader) tsHeader.style.transform = `translateY(${p * -20}px)`;
+      // Start state: golden and twilight both fully clipped from left (hidden)
+      // As scroll progresses, we unclip them in sequence to reveal
+      gsap.set(tsGolden, { opacity: 1, clipPath: 'inset(0 100% 0 0)' });
+      gsap.set(tsTwilight, { opacity: 1, clipPath: 'inset(0 100% 0 0)' });
 
-            // State labels
-            let active = 'day';
-            if (p >= 0.60) active = 'twilight';
-            else if (p >= 0.28) active = 'golden';
-            tsLabelDay.classList.toggle('active', active === 'day');
-            tsLabelGolden.classList.toggle('active', active === 'golden');
-            tsLabelTwilight.classList.toggle('active', active === 'twilight');
+      ScrollTrigger.create({
+        trigger: tsPin,
+        start: 'top top',
+        end: '+=2400',
+        scrub: 1.2,
+        pin: true,
+        anticipatePin: 1,
+        onEnter: () => tsPin.classList.add('is-pinned'),
+        onEnterBack: () => tsPin.classList.add('is-pinned'),
+        onLeave: () => {
+          tsPin.classList.remove('is-pinned');
+          tsPin.classList.add('pin-complete');
+        },
+        onLeaveBack: () => tsPin.classList.remove('is-pinned'),
+        onUpdate: (self) => {
+          const p = self.progress;
+          if (tsSticky) tsSticky.style.setProperty('--progress', (p * 100) + '%');
+          if (tsHeader) tsHeader.style.transform = `translateY(${p * -20}px)`;
 
-            // Sync scan line with transition windows
-            // Transition 1: day → golden (0.15 to 0.35)
-            // Transition 2: golden → twilight (0.50 to 0.70)
-            if (tsScan) {
-              let scanOpacity = 0;
-              let scanPos = 0;
-              if (p >= 0.15 && p <= 0.35) {
-                scanOpacity = 1;
-                scanPos = ((p - 0.15) / 0.20) * 100;
-              } else if (p >= 0.50 && p <= 0.70) {
-                scanOpacity = 1;
-                scanPos = ((p - 0.50) / 0.20) * 100;
-              }
-              tsScan.style.opacity = scanOpacity;
-              tsScan.style.transform = `translateX(${scanPos}%)`;
-            }
+          // Stage 1 (0.15-0.40): Golden reveals via clip wipe left→right
+          // Stage 2 (0.55-0.80): Twilight reveals via clip wipe left→right
+          let goldenReveal = 0;
+          let twilightReveal = 0;
+          let scanActive = false;
+          let scanPos = 0;
+
+          if (p < 0.15) {
+            goldenReveal = 0;
+            twilightReveal = 0;
+          } else if (p < 0.40) {
+            goldenReveal = (p - 0.15) / 0.25;
+            scanActive = true;
+            scanPos = goldenReveal * 100;
+          } else if (p < 0.55) {
+            goldenReveal = 1;
+            twilightReveal = 0;
+          } else if (p < 0.80) {
+            goldenReveal = 1;
+            twilightReveal = (p - 0.55) / 0.25;
+            scanActive = true;
+            scanPos = twilightReveal * 100;
+          } else {
+            goldenReveal = 1;
+            twilightReveal = 1;
           }
+
+          // Apply clip-path reveals
+          tsGolden.style.clipPath = `inset(0 ${(1 - goldenReveal) * 100}% 0 0)`;
+          tsTwilight.style.clipPath = `inset(0 ${(1 - twilightReveal) * 100}% 0 0)`;
+
+          // Scan line follows the reveal edge
+          if (tsScan) {
+            tsScan.style.opacity = scanActive ? 1 : 0;
+            tsScan.style.left = scanPos + '%';
+          }
+
+          // Labels
+          let active = 'day';
+          if (p >= 0.60) active = 'twilight';
+          else if (p >= 0.28) active = 'golden';
+          tsLabelDay.classList.toggle('active', active === 'day');
+          tsLabelGolden.classList.toggle('active', active === 'golden');
+          tsLabelTwilight.classList.toggle('active', active === 'twilight');
         }
       });
 
-      tsTl
-        .to({}, { duration: 0.15 })
-        .to(tsGolden, { opacity: 1, duration: 0.35, ease: 'sine.inOut' })
-        .to({}, { duration: 0.15 })
-        .to(tsTwilight, { opacity: 1, duration: 0.35, ease: 'sine.inOut' })
-        .to({}, { duration: 0.15 });
-
-      // Click interactions - only active after pin is complete
+      // Click-to-preview after pin complete
       function setTsState(state) {
         if (!tsPin.classList.contains('pin-complete')) return;
 
@@ -203,22 +218,11 @@
         tsLabelGolden.classList.toggle('active', state === 'golden');
         tsLabelTwilight.classList.toggle('active', state === 'twilight');
 
-        const goldenOp = state === 'day' ? 0 : 1;
-        const twilightOp = state === 'twilight' ? 1 : 0;
+        const goldenClip = state === 'day' ? 'inset(0 100% 0 0)' : 'inset(0 0% 0 0)';
+        const twilightClip = state === 'twilight' ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)';
 
-        gsap.to(tsGolden, { opacity: goldenOp, duration: 0.6, ease: 'sine.inOut' });
-        gsap.to(tsTwilight, { opacity: twilightOp, duration: 0.6, ease: 'sine.inOut' });
-
-        // Brief scan line sweep for visual feedback
-        if (tsScan) {
-          gsap.fromTo(tsScan,
-            { opacity: 1, x: '0%' },
-            {
-              opacity: 0, x: (tsScan.parentElement.offsetWidth) + 'px',
-              duration: 0.6, ease: 'sine.inOut'
-            }
-          );
-        }
+        gsap.to(tsGolden, { clipPath: goldenClip, duration: 0.7, ease: 'sine.inOut' });
+        gsap.to(tsTwilight, { clipPath: twilightClip, duration: 0.7, ease: 'sine.inOut' });
       }
 
       tsLabelDay.addEventListener('click', () => setTsState('day'));
