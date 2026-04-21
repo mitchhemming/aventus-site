@@ -616,7 +616,7 @@ body.scrolled .hero-scroll-indicator {
 
 .intro-ghost {
   position: absolute;
-  top: calc(50% - 18px);
+  top: calc(50% - 60px);
   left: 50%;
   transform: translate(-50%, -50%) translateY(20px);
   font-family: var(--font-display);
