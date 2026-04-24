@@ -177,69 +177,42 @@
   // ═══ PINNED SECTIONS ═══
   function initPinnedSections() {
 
-    // ─── CAPABILITIES: Staggered before/after reveal on scroll (no pin) ───
-    const capPin = document.getElementById('capPin');
-    if (capPin) {
-      const capItems = Array.from(capPin.querySelectorAll('.cap-item'));
-      const totalTiles = capItems.length;
-      const tileData = capItems.map((item) => ({
-        item,
-        after: item.querySelector('.cap-after'),
-        scan: item.querySelector('.cap-scan')
-      }));
+    // ─── CAPABILITIES: Cascading scan reveal (no pin) ───
+    // Each tile's gold scan sweeps L→R, staggered 160ms apart.
+    // Breathing loop kicks in after reveal. Re-triggers on scroll back up.
+    const capSection = document.getElementById('capPin');
+    if (capSection) {
+      const capTiles = Array.from(capSection.querySelectorAll('.cap-item'));
+      const STAGGER = 160; // ms between each tile starting its reveal
 
-      // Scroll-driven clip-path reveal - images always visible, content revealed by .reveal class
-      // Reset state function for when user scrolls above section (re-trigger on scroll down)
-      const resetCaps = () => {
-        tileData.forEach(({ after, scan }) => {
-          if (after) after.style.clipPath = 'inset(0 100% 0 0)';
-          if (scan) scan.style.opacity = 0;
+      const runCapCascade = () => {
+        capTiles.forEach((tile, i) => {
+          if (tile._revealTimer) clearTimeout(tile._revealTimer);
+          tile._revealTimer = setTimeout(() => {
+            tile.classList.add('revealed');
+          }, i * STAGGER);
         });
       };
 
-      // Apply initial state
-      resetCaps();
+      const resetCapCascade = () => {
+        capTiles.forEach((tile) => {
+          if (tile._revealTimer) clearTimeout(tile._revealTimer);
+          tile.classList.remove('revealed');
+          // Force reflow so the next add('revealed') re-triggers the animation
+          void tile.offsetHeight;
+        });
+      };
 
       ScrollTrigger.create({
-        trigger: capPin,
-        start: 'top 85%',
-        end: 'bottom 40%',
-        scrub: 0.8,
-        onLeaveBack: resetCaps,
-        onUpdate: (self) => {
-          const p = self.progress;
-          const activeP = Math.max(0, Math.min(1, (p - 0.1) / 0.8));
-          const tileShare = 1 / totalTiles;
-
-          tileData.forEach(({ after, scan }, i) => {
-            const tileStart = i * tileShare;
-            const tileEnd = (i + 1) * tileShare;
-
-            let local = 0;
-            if (activeP >= tileEnd) local = 1;
-            else if (activeP > tileStart) local = (activeP - tileStart) / tileShare;
-
-            if (after) {
-              after.style.clipPath = `inset(0 ${(1 - local) * 100}% 0 0)`;
-            }
-
-            if (scan) {
-              if (local > 0 && local < 1) {
-                scan.style.opacity = 1;
-                scan.style.left = (local * 100) + '%';
-              } else {
-                scan.style.opacity = 0;
-                scan.style.left = (local * 100) + '%';
-              }
-            }
-          });
-        }
+        trigger: capSection,
+        start: 'top 72%',
+        end: 'bottom 28%',
+        onEnter: runCapCascade,
+        onEnterBack: runCapCascade,
+        onLeave: resetCapCascade,
+        onLeaveBack: resetCapCascade
       });
     }
-
-    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
-
-    // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
 
     // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
     const tsPin = document.getElementById('tsPin');
