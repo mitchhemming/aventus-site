@@ -1235,99 +1235,28 @@ body.scrolled .hero-scroll-indicator {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.45s ease,
-              filter 0.4s ease;
 }
-
-/* No darkening — real photos render at their natural exposure */
 
 .cap-after {
-  clip-path: inset(0 100% 0 0);
-  will-change: clip-path, opacity, filter;
-}
-
-/* Gold scan line that travels with the clip edge */
-.cap-scan {
-  position: absolute;
-  top: -4%;
-  bottom: -4%;
-  left: 0;
-  width: 2px;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--gold) 20%,
-    var(--gold) 80%,
-    transparent 100%);
-  box-shadow:
-    0 0 10px rgba(232, 168, 56, 0.95),
-    0 0 24px rgba(232, 168, 56, 0.5);
-  z-index: 3;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%);
-  transition: left 0.95s cubic-bezier(0.7, 0, 0.25, 1);
-  will-change: left, opacity;
-}
-
-/* ── Revealed state: after-photo fully shown, breathing loop begins ── */
-.cap-item.revealed .cap-after {
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 0.95s cubic-bezier(0.7, 0, 0.25, 1),
-              opacity 0.45s ease,
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: cap-breathe 7s ease-in-out infinite;
-}
-
-/* Scan line slides to right edge as reveal completes, then fades */
-.cap-item.revealed .cap-scan {
   opacity: 1;
-  left: 100%;
-  animation: cap-scan-fadeout 0.4s ease-out 0.85s forwards;
+  transition: opacity 0.5s ease;
 }
 
-/* Staggered breathing — each tile breathes at its own phase for ambient variation */
-.cap-item[data-cap-index="0"].revealed .cap-after { animation-delay: 0s; }
-.cap-item[data-cap-index="1"].revealed .cap-after { animation-delay: 1.4s; }
-.cap-item[data-cap-index="2"].revealed .cap-after { animation-delay: 2.8s; }
-.cap-item[data-cap-index="3"].revealed .cap-after { animation-delay: 4.2s; }
-.cap-item[data-cap-index="4"].revealed .cap-after { animation-delay: 5.6s; }
+/* Hover: fade after-photo out to reveal the before underneath */
+.cap-item:hover .cap-after {
+  opacity: 0;
+}
 
-/* Hover: after-photo fades out to reveal the before. Images gently zoom. */
-@media (hover: hover) {
-  .cap-item.revealed:hover .cap-after {
-    opacity: 0;
-    animation-play-state: paused;
-  }
-  .cap-item.revealed:hover .cap-before,
-  .cap-item.revealed:hover .cap-after {
-    transform: scale(1.035);
-  }
+/* Scan line no longer used — kept hidden for HTML compatibility */
+.cap-scan {
+  display: none;
 }
 
 /* Touch devices: tap-and-hold as a hover alternative */
 @media (hover: none) {
-  .cap-item.revealed:active .cap-after {
+  .cap-item:active .cap-after {
     opacity: 0;
-    animation-play-state: paused;
   }
-}
-
-@keyframes cap-breathe {
-  0%, 100% { filter: brightness(1) saturate(1); }
-  50%      { filter: brightness(1.05) saturate(1.04); }
-}
-
-@keyframes cap-scan-fadeout {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-
-/* Reduced motion: show revealed state instantly, no scan, no breathing */
-@media (prefers-reduced-motion: reduce) {
-  .cap-item .cap-after { clip-path: inset(0 0 0 0); transition: none; }
-  .cap-item.revealed .cap-after { animation: none; }
-  .cap-scan { display: none; }
 }
 
 .cap-content {
