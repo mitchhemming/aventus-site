@@ -159,6 +159,65 @@
 
   // Marquees are auto-scrolling via CSS animation, no JS needed
 
+  // ═══ MOBILE MOMENT — scroll-driven phone float + side text parallax ═══
+  const mobileMoment = document.getElementById('mobileMoment');
+  if (mobileMoment) {
+    const phone = mobileMoment.querySelector('.phone');
+    const mobileSide = mobileMoment.querySelector('.mobile-side');
+
+    // Toggle .in-view on the section as it enters/exits the viewport
+    // This triggers the ambient gold halo and the scan-line glow pulse
+    ScrollTrigger.create({
+      trigger: mobileMoment,
+      start: 'top 75%',
+      end: 'bottom 25%',
+      onEnter: () => mobileMoment.classList.add('in-view'),
+      onEnterBack: () => mobileMoment.classList.add('in-view'),
+      onLeave: () => mobileMoment.classList.remove('in-view'),
+      onLeaveBack: () => mobileMoment.classList.remove('in-view')
+    });
+
+    // Phone drifts up with a subtle rotate as the user scrolls through.
+    // yPercent negative = moves up relative to its own height.
+    // rotate: small tilt going from +3 → -3 for cinematic feel.
+    if (phone) {
+      gsap.fromTo(phone,
+        { yPercent: 18, rotate: 3, scale: 0.92 },
+        {
+          yPercent: -18,
+          rotate: -3,
+          scale: 1.02,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: mobileMoment,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2
+          }
+        }
+      );
+    }
+
+    // Side text parallaxes at a slower rate in the opposite direction
+    // so the phone and text "separate" as the section scrolls by
+    if (mobileSide) {
+      gsap.fromTo(mobileSide,
+        { yPercent: -12, opacity: 0.4 },
+        {
+          yPercent: 12,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: mobileMoment,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.4
+          }
+        }
+      );
+    }
+  }
+
   // ═══ PARALLAX ═══
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
     const speed = parseFloat(el.dataset.parallax || '0.3');
