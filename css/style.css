@@ -1297,6 +1297,33 @@ body.scrolled .hero-scroll-indicator {
   overflow: visible;
 }
 
+/* Ambient gold pulse behind the phone — amps up as phone enters view */
+.mobile-moment::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 700px;
+  height: 700px;
+  max-width: 90vw;
+  max-height: 90vw;
+  background: radial-gradient(circle at center,
+    rgba(232, 168, 56, 0.18) 0%,
+    rgba(232, 168, 56, 0.04) 35%,
+    transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-moment.in-view::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
 .mobile-scene {
   display: flex;
   align-items: center;
@@ -1312,6 +1339,7 @@ body.scrolled .hero-scroll-indicator {
 .mobile-side {
   max-width: 440px;
   flex-shrink: 0;
+  will-change: transform;
 }
 
 .mobile-side-eyebrow {
@@ -1363,6 +1391,25 @@ body.scrolled .hero-scroll-indicator {
     0 10px 40px rgba(232, 168, 56, 0.08),
     inset 0 0 2px rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
+  will-change: transform;
+}
+
+/* Side text gets its own transform channel for parallax on scroll */
+/* (will-change applied to base rule above) */
+
+/* Scan line glow keyframes — used by the in-view rule further down */
+@keyframes scanGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 12px rgba(232, 168, 56, 0.8),
+      0 0 28px rgba(232, 168, 56, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(232, 168, 56, 1),
+      0 0 44px rgba(232, 168, 56, 0.6),
+      0 0 80px rgba(232, 168, 56, 0.25);
+  }
 }
 
 .phone::before {
@@ -1526,7 +1573,7 @@ body.scrolled .hero-scroll-indicator {
 .phone-preview {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 2/3;
   border-radius: 14px;
   overflow: hidden;
   box-shadow:
@@ -1543,65 +1590,35 @@ body.scrolled .hero-scroll-indicator {
   background-position: center;
 }
 
+/* Before — daylight photo fills the frame */
 .phone-preview-before {
-  background:
-    linear-gradient(180deg,
-      #8a9aa8 0%,
-      #b5c2cc 30%,
-      #d4dbdd 60%,
-      #a8a89a 100%);
+  z-index: 1;
 }
 
+/* After — twilight photo. Starts fully hidden (clipped from left),
+   sweeps in to the 50/50 split when section enters view. */
 .phone-preview-after {
-  background:
-    linear-gradient(180deg,
-      #3d2f52 0%,
-      #9c5a7a 25%,
-      #e89a6a 45%,
-      #5a4537 70%,
-      #1a1a24 100%);
+  z-index: 2;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 1.6s cubic-bezier(0.7, 0, 0.25, 1) 0.3s;
+}
+
+.mobile-moment.in-view .phone-preview-after {
   clip-path: inset(0 0 0 50%);
 }
 
-.phone-preview-house {
-  position: absolute;
-  bottom: 20%;
-  left: 20%;
-  right: 20%;
-  height: 45%;
-  background: #2a2a2e;
-  clip-path: polygon(
-    0% 100%,
-    0% 40%,
-    15% 40%,
-    15% 15%,
-    50% 0%,
-    85% 15%,
-    85% 40%,
-    100% 40%,
-    100% 100%);
-}
-
-.phone-preview-house::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -20%);
-  width: 20%;
-  height: 30%;
-  background: radial-gradient(circle, #ffd88a 0%, transparent 70%);
-}
-
+/* Scan line slides in sync with the clip edge */
 .phone-preview-scan {
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  left: 100%;
+  transition: left 1.6s cubic-bezier(0.7, 0, 0.25, 1) 0.3s,
+              opacity 0.4s ease;
+  opacity: 0;
+}
+
+.mobile-moment.in-view .phone-preview-scan {
   left: 50%;
-  width: 2px;
-  background: var(--gold);
-  box-shadow: 0 0 12px rgba(232, 168, 56, 0.8);
-  z-index: 5;
+  opacity: 1;
+  animation: scanGlow 2.8s ease-in-out 2s infinite;
 }
 
 .phone-preview-label {
