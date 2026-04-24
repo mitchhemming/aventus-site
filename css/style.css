@@ -1235,26 +1235,30 @@ body.scrolled .hero-scroll-indicator {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: filter 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s ease,
+              filter 0.4s ease;
 }
 
-.cap-before {
-  filter: brightness(0.75) saturate(0.85);
-}
+/* No darkening — real photos render at their natural exposure */
 
 .cap-after {
   clip-path: inset(0 100% 0 0);
-  will-change: clip-path;
+  will-change: clip-path, opacity, filter;
 }
 
 /* Gold scan line that travels with the clip edge */
 .cap-scan {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: -4%;
+  bottom: -4%;
   left: 0;
   width: 2px;
-  background: var(--gold);
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--gold) 20%,
+    var(--gold) 80%,
+    transparent 100%);
   box-shadow:
     0 0 10px rgba(232, 168, 56, 0.95),
     0 0 24px rgba(232, 168, 56, 0.5);
@@ -1262,16 +1266,68 @@ body.scrolled .hero-scroll-indicator {
   opacity: 0;
   pointer-events: none;
   transform: translateX(-50%);
+  transition: left 0.95s cubic-bezier(0.7, 0, 0.25, 1);
   will-change: left, opacity;
 }
 
-/* Hover preview after reveal completes: click/hover to see before state */
+/* ── Revealed state: after-photo fully shown, breathing loop begins ── */
 .cap-item.revealed .cap-after {
-  transition: clip-path 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.95s cubic-bezier(0.7, 0, 0.25, 1),
+              opacity 0.45s ease,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cap-breathe 7s ease-in-out infinite;
 }
 
-.cap-item.revealed:hover .cap-after {
-  clip-path: inset(0 100% 0 0);
+/* Scan line slides to right edge as reveal completes, then fades */
+.cap-item.revealed .cap-scan {
+  opacity: 1;
+  left: 100%;
+  animation: cap-scan-fadeout 0.4s ease-out 0.85s forwards;
+}
+
+/* Staggered breathing — each tile breathes at its own phase for ambient variation */
+.cap-item[data-cap-index="0"].revealed .cap-after { animation-delay: 0s; }
+.cap-item[data-cap-index="1"].revealed .cap-after { animation-delay: 1.4s; }
+.cap-item[data-cap-index="2"].revealed .cap-after { animation-delay: 2.8s; }
+.cap-item[data-cap-index="3"].revealed .cap-after { animation-delay: 4.2s; }
+.cap-item[data-cap-index="4"].revealed .cap-after { animation-delay: 5.6s; }
+
+/* Hover: after-photo fades out to reveal the before. Images gently zoom. */
+@media (hover: hover) {
+  .cap-item.revealed:hover .cap-after {
+    opacity: 0;
+    animation-play-state: paused;
+  }
+  .cap-item.revealed:hover .cap-before,
+  .cap-item.revealed:hover .cap-after {
+    transform: scale(1.035);
+  }
+}
+
+/* Touch devices: tap-and-hold as a hover alternative */
+@media (hover: none) {
+  .cap-item.revealed:active .cap-after {
+    opacity: 0;
+    animation-play-state: paused;
+  }
+}
+
+@keyframes cap-breathe {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50%      { filter: brightness(1.05) saturate(1.04); }
+}
+
+@keyframes cap-scan-fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Reduced motion: show revealed state instantly, no scan, no breathing */
+@media (prefers-reduced-motion: reduce) {
+  .cap-item .cap-after { clip-path: inset(0 0 0 0); transition: none; }
+  .cap-item.revealed .cap-after { animation: none; }
+  .cap-scan { display: none; }
 }
 
 .cap-content {
@@ -2696,7 +2752,6 @@ main, section, footer {
     line-height: 1.15;
   }
   .cap-grid { grid-template-columns: 1fr; gap: 14px; }
-  .cap-item { padding: 32px 24px; }
   .cap-num { font-size: 10px; letter-spacing: 3px; margin-bottom: 16px; }
   .cap-item h3 { font-size: 18px; margin-bottom: 10px; }
   .cap-item p { font-size: 13px; line-height: 1.5; }
