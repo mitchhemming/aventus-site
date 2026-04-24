@@ -177,42 +177,7 @@
   // ═══ PINNED SECTIONS ═══
   function initPinnedSections() {
 
-    // ─── CAPABILITIES: Cascading scan reveal (no pin) ───
-    // Each tile's gold scan sweeps L→R, staggered 160ms apart.
-    // Breathing loop kicks in after reveal. Re-triggers on scroll back up.
-    const capSection = document.getElementById('capPin');
-    if (capSection) {
-      const capTiles = Array.from(capSection.querySelectorAll('.cap-item'));
-      const STAGGER = 160; // ms between each tile starting its reveal
-
-      const runCapCascade = () => {
-        capTiles.forEach((tile, i) => {
-          if (tile._revealTimer) clearTimeout(tile._revealTimer);
-          tile._revealTimer = setTimeout(() => {
-            tile.classList.add('revealed');
-          }, i * STAGGER);
-        });
-      };
-
-      const resetCapCascade = () => {
-        capTiles.forEach((tile) => {
-          if (tile._revealTimer) clearTimeout(tile._revealTimer);
-          tile.classList.remove('revealed');
-          // Force reflow so the next add('revealed') re-triggers the animation
-          void tile.offsetHeight;
-        });
-      };
-
-      ScrollTrigger.create({
-        trigger: capSection,
-        start: 'top 72%',
-        end: 'bottom 28%',
-        onEnter: runCapCascade,
-        onEnterBack: runCapCascade,
-        onLeave: resetCapCascade,
-        onLeaveBack: resetCapCascade
-      });
-    }
+    // Capabilities grid uses pure CSS hover — no JS needed
 
     // ─── TIME SHIFT DEMO: Daylight → Golden → Twilight (clip-path reveal, like the hero) ───
     const tsPin = document.getElementById('tsPin');
