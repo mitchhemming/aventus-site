@@ -755,54 +755,83 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .foundation-inner {
-  max-width: 1000px;
+  max-width: 1100px;
   width: 100%;
   text-align: center;
   position: relative;
   z-index: 1;
 }
 
-.foundation-label {
+/* Hairlines top + bottom — frame the callout as a deliberate section */
+.foundation-inner::before,
+.foundation-inner::after {
+  content: '';
   display: block;
-  font-size: 12px;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 32px;
+  width: 80px;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.5), transparent);
 }
 
-.foundation-heading {
-  font-size: clamp(40px, 7vw, 96px);
-  font-weight: 800;
+.foundation-inner::before { margin-bottom: 36px; }
+.foundation-inner::after  { margin-top: 36px; }
+
+/* The single-line callout — small supporting text wrapping a massive number */
+.foundation-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-weight: 500;
   color: var(--white);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin-bottom: 40px;
+  line-height: 1.15;
+  letter-spacing: 0.1px;
 }
 
-.foundation-heading .counter {
-  color: var(--gold);
+/* Supporting text lines — small, calm, reading like a caption */
+.fc-line {
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.fc-line em.accent-serif {
   font-variant-numeric: tabular-nums;
 }
 
-.foundation-plus {
-  color: var(--gold);
+/* The hero number — scale-as-visual. Sized between supporting text but
+   clearly dominant. Italic gold Cormorant matches site emphasis pattern. */
+.fc-bignum {
+  display: block;
+  margin: 4px 0;
+  line-height: 0.95;
+}
+
+.fc-bignum em.accent-serif {
+  font-size: clamp(72px, 11vw, 150px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+
+.fc-plus {
+  font-size: 0.55em;
   font-weight: 300;
-  font-size: 0.7em;
+  color: var(--gold);
+  margin-left: 0.05em;
+  vertical-align: 0.35em;
 }
 
-.foundation-body {
-  max-width: 720px;
-  margin: 0 auto;
-  font-size: clamp(17px, 1.65vw, 20px);
+/* Tagline — small, dim, italic-feeling without being italic */
+.foundation-tagline {
+  margin: 28px auto 0;
+  max-width: 520px;
+  font-size: clamp(13px, 1.1vw, 15px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: var(--white-dim);
-  line-height: 1.75;
-}
-
-.foundation-body em {
-  font-style: normal;
-  color: var(--white);
-  font-weight: 500;
+  line-height: 1.6;
 }
 
 /* ═══ SECTION HEADER (Media / Studio / Agency) ═══ */
@@ -2282,7 +2311,6 @@ h1.reveal, h2.reveal,
 .section-heading.reveal,
 .cap-heading.reveal,
 .bf-heading.reveal,
-.foundation-heading.reveal,
 .unified-heading.reveal,
 .cta-heading.reveal,
 .mobile-heading.reveal,
@@ -2297,7 +2325,6 @@ h1.reveal.visible, h2.reveal.visible,
 .section-heading.reveal.visible,
 .cap-heading.reveal.visible,
 .bf-heading.reveal.visible,
-.foundation-heading.reveal.visible,
 .unified-heading.reveal.visible,
 .cta-heading.reveal.visible,
 .mobile-heading.reveal.visible,
@@ -2309,8 +2336,7 @@ h1.reveal.visible, h2.reveal.visible,
 .section-label.reveal,
 .cap-label.reveal,
 .bf-label.reveal,
-.mobile-label.reveal,
-.foundation-label.reveal {
+.mobile-label.reveal {
   transform: translateY(30px);
   transition:
     opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
@@ -2390,32 +2416,6 @@ main, section, footer {
   margin-top: 6px;
   color: var(--white-faint);
   letter-spacing: 2px;
-}
-
-/* ─── Foundation scatter positions ─── */
-.scatter-foundation-1 {
-  width: 180px;
-  height: 240px;
-  top: 14%;
-  left: 8%;
-}
-.scatter-foundation-2 {
-  width: 240px;
-  height: 160px;
-  top: 8%;
-  right: 10%;
-}
-.scatter-foundation-3 {
-  width: 140px;
-  height: 140px;
-  bottom: 18%;
-  left: 14%;
-}
-.scatter-foundation-4 {
-  width: 160px;
-  height: 220px;
-  bottom: 10%;
-  right: 7%;
 }
 
 /* ─── Unified Model scatter positions ─── */
@@ -3013,15 +3013,16 @@ main, section, footer {
   }
 
   /* Foundation */
-  .foundation { padding: 70px 20px; }
-  .foundation-label { font-size: 10px; letter-spacing: 4px; margin-bottom: 24px; }
-  .foundation-heading {
-    font-size: clamp(32px, 10vw, 48px);
-    line-height: 1.1;
-    margin-bottom: 32px;
-  }
-  .foundation-body {
-    font-size: 15px;
+  .foundation { padding: 60px 20px; }
+  .foundation-inner::before { margin-bottom: 24px; }
+  .foundation-inner::after { margin-top: 24px; }
+  .foundation-callout { gap: 4px; }
+  .fc-line { font-size: clamp(16px, 4.5vw, 18px); }
+  .fc-bignum em.accent-serif { font-size: clamp(58px, 17vw, 96px); }
+  .foundation-tagline {
+    margin-top: 22px;
+    font-size: 11px;
+    letter-spacing: 2.5px;
     line-height: 1.7;
   }
 
@@ -3281,10 +3282,6 @@ main, section, footer {
 
   /* Scatter photos - shrink and reduce opacity on mobile so they don't clutter */
   .scatter-img.visible { opacity: 0.35; }
-  .scatter-foundation-1 { width: 90px; height: 120px; top: 6%; left: 4%; }
-  .scatter-foundation-2 { width: 110px; height: 80px; top: 4%; right: 4%; }
-  .scatter-foundation-3 { width: 80px; height: 80px; bottom: 8%; left: 6%; }
-  .scatter-foundation-4 { width: 80px; height: 110px; bottom: 4%; right: 4%; }
 
   .scatter-unified-1 { width: 130px; height: 90px; top: 6%; right: 4%; }
   .scatter-unified-2 { width: 80px; height: 110px; bottom: 6%; left: 4%; }
@@ -3304,7 +3301,7 @@ main, section, footer {
     letter-spacing: 2px;
   }
   .hero-dot { margin: 0 6px; }
-  .foundation-heading { font-size: clamp(28px, 9vw, 38px); }
+  .fc-bignum em.accent-serif { font-size: clamp(48px, 16vw, 72px); }
   .section-heading { font-size: clamp(40px, 13vw, 56px); }
   .stats-grid { grid-template-columns: 1fr; }
 }
