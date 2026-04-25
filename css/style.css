@@ -2531,6 +2531,316 @@ main, section, footer {
   opacity: 0.8;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CONTACT FORM (.cf) — soft-highlight sequenced behaviour.
+   All questions render at once; JS adds .is-active to the next
+   uncompleted question to glow it. Earlier ones stay editable.
+═══════════════════════════════════════════════════════════ */
+
+.cf {
+  max-width: 720px;
+  margin: 60px auto 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Question container — fieldset with no native browser styling */
+.cf-q {
+  border: 1px solid var(--white-faint);
+  border-radius: 10px;
+  padding: 28px 32px 32px;
+  background: rgba(6, 6, 11, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s ease;
+  position: relative;
+  margin: 0;
+  /* Inactive questions: dim and tucked back */
+  opacity: 0.55;
+}
+
+/* Active question — highlighted with a gold glow */
+.cf-q.is-active {
+  opacity: 1;
+  border-color: rgba(232, 168, 56, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(232, 168, 56, 0.2),
+    0 0 28px rgba(232, 168, 56, 0.12),
+    0 18px 40px rgba(0, 0, 0, 0.3);
+  background: rgba(6, 6, 11, 0.6);
+}
+
+/* Completed question — subtle gold tick on the right */
+.cf-q.is-complete::after {
+  content: '✓';
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(232, 168, 56, 0.5);
+}
+
+.cf-q.is-complete:not(.is-active) {
+  opacity: 0.85;
+}
+
+/* Question label */
+.cf-label {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.2px;
+  margin-bottom: 18px;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.cf-num {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* ─── Radio button options (Services / Category) ─── */
+.cf-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cf-opt {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cf-opt input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cf-opt span {
+  display: inline-block;
+  padding: 12px 20px;
+  border: 1px solid var(--white-faint);
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: var(--white-dim);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.cf-opt:hover span {
+  border-color: rgba(232, 168, 56, 0.4);
+  color: var(--white);
+}
+
+/* Selected radio: gold pill */
+.cf-opt input:checked + span {
+  background: rgba(232, 168, 56, 0.12);
+  border-color: var(--gold);
+  color: var(--white);
+  box-shadow: 0 0 16px rgba(232, 168, 56, 0.2);
+}
+
+/* Keyboard focus ring */
+.cf-opt input:focus-visible + span {
+  outline: 2px solid rgba(232, 168, 56, 0.5);
+  outline-offset: 3px;
+}
+
+/* ─── Text inputs and textarea ─── */
+.cf-input,
+.cf-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--white-faint);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  padding: 14px 18px;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.cf-textarea {
+  resize: vertical;
+  min-height: 110px;
+  font-family: inherit;
+}
+
+.cf-input::placeholder,
+.cf-textarea::placeholder {
+  color: var(--white-muted);
+}
+
+.cf-input:hover,
+.cf-textarea:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.cf-input:focus,
+.cf-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(232, 168, 56, 0.04);
+  box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.12);
+}
+
+/* Browser autofill — keep dark theme */
+.cf-input:-webkit-autofill {
+  -webkit-text-fill-color: var(--white);
+  -webkit-box-shadow: 0 0 0 1000px rgba(6, 6, 11, 0.95) inset;
+  caret-color: var(--white);
+}
+
+/* ─── Submit button ─── */
+.cf-submit-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.cf-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 44px;
+  background: var(--gold);
+  color: var(--bg);
+  border: 0;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, opacity 0.3s ease;
+  box-shadow:
+    0 12px 32px rgba(232, 168, 56, 0.25),
+    0 0 0 1px rgba(232, 168, 56, 0.4);
+}
+
+.cf-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 40px rgba(232, 168, 56, 0.35),
+    0 0 0 1px rgba(232, 168, 56, 0.6);
+}
+
+.cf-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.cf-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cf-submit-arrow {
+  font-size: 18px;
+  font-weight: 400;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cf-submit:hover:not(:disabled) .cf-submit-arrow {
+  transform: translateX(4px);
+}
+
+/* ─── Status messages (after submit) ─── */
+.cf-status {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  min-height: 20px;
+}
+
+.cf-status.is-error {
+  color: #ff8a8a;
+}
+
+.cf-status.is-success {
+  color: var(--gold);
+  font-size: 16px;
+}
+
+/* Success state — entire form replaced with a thank-you message */
+.cf.is-submitted .cf-q,
+.cf.is-submitted .cf-submit-row {
+  display: none;
+}
+
+.cf-thanks {
+  display: none;
+  padding: 60px 32px;
+  text-align: center;
+  border: 1px solid rgba(232, 168, 56, 0.4);
+  border-radius: 10px;
+  background: rgba(232, 168, 56, 0.04);
+}
+
+.cf.is-submitted .cf-thanks {
+  display: block;
+}
+
+.cf-thanks-mark {
+  font-size: 36px;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.cf-thanks h3 {
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.cf-thanks p {
+  font-size: 16px;
+  color: var(--white-dim);
+  line-height: 1.6;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+/* ═══ END CONTACT FORM ═══ */
+
 /* ═══ RESPONSIVE ═══ */
 
 /* Tablet breakpoint */
@@ -2835,12 +3145,51 @@ main, section, footer {
     font-size: 14px;
     margin-top: 16px;
   }
-  .cta-email {
-    font-size: 13px;
-    letter-spacing: 2.5px;
+
+  /* Contact form mobile */
+  .cf {
     margin-top: 40px;
-    word-break: break-word;
+    gap: 16px;
   }
+  .cf-q {
+    padding: 22px 22px 24px;
+    border-radius: 8px;
+  }
+  .cf-q.is-complete::after {
+    top: 22px;
+    right: 22px;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+  .cf-label {
+    font-size: 14px;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .cf-num {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+  }
+  .cf-options { gap: 8px; }
+  .cf-opt span {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  .cf-input,
+  .cf-textarea {
+    font-size: 15px;
+    padding: 12px 14px;
+  }
+  .cf-textarea { min-height: 90px; }
+  .cf-submit {
+    padding: 16px 32px;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+  }
+  .cf-thanks { padding: 40px 24px; }
+  .cf-thanks h3 { font-size: clamp(22px, 6vw, 28px); }
+  .cf-thanks p { font-size: 14px; }
 
   /* Footer */
   footer { padding: 40px 20px 32px; }
