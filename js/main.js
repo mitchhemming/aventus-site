@@ -159,14 +159,11 @@
 
   // Marquees are auto-scrolling via CSS animation, no JS needed
 
-  // ═══ MOBILE MOMENT — scroll-driven phone float + side text parallax ═══
+  // ═══ MOBILE MOMENT — fade-in entry, gold halo glow ═══
+  // Phone and side text use simple .reveal class for fade-in.
+  // No parallax — keeps the phone in its natural padded position.
   const mobileMoment = document.getElementById('mobileMoment');
   if (mobileMoment) {
-    const phone = mobileMoment.querySelector('.phone');
-    const mobileSide = mobileMoment.querySelector('.mobile-side');
-
-    // Toggle .in-view on the section as it enters/exits the viewport
-    // This triggers the ambient gold halo and the scan-line glow pulse
     ScrollTrigger.create({
       trigger: mobileMoment,
       start: 'top 75%',
@@ -176,43 +173,6 @@
       onLeave: () => mobileMoment.classList.remove('in-view'),
       onLeaveBack: () => mobileMoment.classList.remove('in-view')
     });
-
-    // Phone drifts vertically through the section as the user scrolls.
-    // No rotation, no scale — sits perfectly upright the whole time.
-    // 50% total Y range = strong, noticeable movement.
-    if (phone) {
-      gsap.fromTo(phone,
-        { yPercent: 25 },
-        {
-          yPercent: -25,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: mobileMoment,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.8
-          }
-        }
-      );
-    }
-
-    // Side text parallaxes hard in the OPPOSITE direction so phone and text
-    // visibly separate as the section scrolls past. 40% total range.
-    if (mobileSide) {
-      gsap.fromTo(mobileSide,
-        { yPercent: -20 },
-        {
-          yPercent: 20,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: mobileMoment,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.8
-          }
-        }
-      );
-    }
   }
 
   // ═══ PARALLAX ═══
