@@ -461,12 +461,11 @@
 
   <div class="foundation-inner">
     <h2 class="foundation-heading reveal" style="transition-delay:0.25s">
-      <span class="counter" data-target="100000">0</span><span class="foundation-plus">+</span> Products.<br>
-      <span class="counter" data-target="15">0</span> Years.<br>
-      <em class="accent-serif">One Dataset.</em>
+      <em class="accent-serif"><span class="counter" data-target="100000">0</span><span class="foundation-plus">+</span></em> Products.<br>
+      <em class="accent-serif"><span class="counter" data-target="15">0</span></em> Years.
     </h2>
     <p class="foundation-body reveal" style="transition-delay:0.4s">
-      Every strategy we execute, every AI model we train, every campaign we optimise is built on a proprietary database of over <em>100,000 vehicles and properties</em> captured across 15 years. This is why our work outperforms. We're not guessing.
+      A proprietary database of over <em>100,000 vehicles and properties</em>, built over 15 years. This is why our work outperforms.
     </p>
   </div>
 </section>
@@ -474,9 +473,85 @@
 <!-- ═══ 17. CTA ═══ -->
 <section class="cta" id="contact">
   <div class="cta-inner">
-    <h2 class="cta-heading reveal">Let's Build Something.</h2>
-    <p class="cta-sub reveal" style="transition-delay:0.4s">Content, technology, and deployment. All under one roof.</p>
-    <a href="mailto:Bookings@AventusMedia.com.au" class="cta-email reveal" style="transition-delay:0.4s">Bookings@AventusMedia.com.au</a>
+    <h2 class="cta-heading reveal">Let's <em class="accent-serif">work together.</em></h2>
+    <p class="cta-sub reveal" style="transition-delay:0.4s">A few questions to get us started.</p>
+
+    <form class="cf" id="contactForm" action="https://formspree.io/f/xvzdlygg" method="POST" novalidate>
+
+      <!-- Q1: Services -->
+      <fieldset class="cf-q is-active" data-q="1">
+        <legend class="cf-label"><span class="cf-num">01</span>What are you interested in?</legend>
+        <div class="cf-options">
+          <label class="cf-opt"><input type="radio" name="service" value="Media Production" required><span>Media Production</span></label>
+          <label class="cf-opt"><input type="radio" name="service" value="AI Enhancement" required><span>AI Enhancement</span></label>
+          <label class="cf-opt"><input type="radio" name="service" value="Ad Agency" required><span>Ad Agency</span></label>
+          <label class="cf-opt"><input type="radio" name="service" value="All Of The Above" required><span>All Of The Above</span></label>
+        </div>
+      </fieldset>
+
+      <!-- Q2: Category -->
+      <fieldset class="cf-q" data-q="2">
+        <legend class="cf-label"><span class="cf-num">02</span>What category is your business?</legend>
+        <div class="cf-options">
+          <label class="cf-opt"><input type="radio" name="category" value="Automotive" required><span>Automotive</span></label>
+          <label class="cf-opt"><input type="radio" name="category" value="Real Estate" required><span>Real Estate</span></label>
+          <label class="cf-opt"><input type="radio" name="category" value="Lifestyle Brand" required><span>Lifestyle Brand</span></label>
+          <label class="cf-opt"><input type="radio" name="category" value="Other" required><span>Other</span></label>
+        </div>
+      </fieldset>
+
+      <!-- Q3: Project description -->
+      <fieldset class="cf-q" data-q="3">
+        <legend class="cf-label"><span class="cf-num">03</span>What do you have in mind?</legend>
+        <textarea name="project" class="cf-textarea" rows="4" required placeholder="A few lines about your project, goals, or what you're hoping to achieve."></textarea>
+      </fieldset>
+
+      <!-- Q4: Name -->
+      <fieldset class="cf-q" data-q="4">
+        <legend class="cf-label"><span class="cf-num">04</span>Your name</legend>
+        <input type="text" name="name" class="cf-input" required placeholder="First and last name">
+      </fieldset>
+
+      <!-- Q5: Business -->
+      <fieldset class="cf-q" data-q="5">
+        <legend class="cf-label"><span class="cf-num">05</span>Business name</legend>
+        <input type="text" name="business" class="cf-input" required placeholder="Your company">
+      </fieldset>
+
+      <!-- Q6: Email -->
+      <fieldset class="cf-q" data-q="6">
+        <legend class="cf-label"><span class="cf-num">06</span>Email address</legend>
+        <input type="email" name="email" class="cf-input" required placeholder="you@yourbusiness.com">
+      </fieldset>
+
+      <!-- Q7: Phone -->
+      <fieldset class="cf-q" data-q="7">
+        <legend class="cf-label"><span class="cf-num">07</span>Phone number</legend>
+        <input type="tel" name="phone" class="cf-input" required placeholder="04XX XXX XXX">
+      </fieldset>
+
+      <!-- Honeypot — hidden field that bots fill but humans don't -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
+
+      <!-- Submit -->
+      <div class="cf-submit-row">
+        <button type="submit" class="cf-submit">
+          <span class="cf-submit-text">Send Enquiry</span>
+          <span class="cf-submit-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- Status messages -->
+      <div class="cf-status" role="status" aria-live="polite"></div>
+
+      <!-- Success state — shown when JS adds .is-submitted to the form -->
+      <div class="cf-thanks" role="status">
+        <div class="cf-thanks-mark">✓</div>
+        <h3>Thanks. We'll be in touch.</h3>
+        <p>Your enquiry has landed in our inbox. Expect a reply from <em>bookings@aventusmedia.com.au</em> within 24 hours.</p>
+      </div>
+
+    </form>
   </div>
 </section>
 
