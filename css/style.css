@@ -781,7 +781,7 @@ body.scrolled .hero-scroll-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 14px;
   margin: 0;
   font-weight: 500;
   color: var(--white);
@@ -796,6 +796,11 @@ body.scrolled .hero-scroll-indicator {
   letter-spacing: 0.2px;
 }
 
+/* Lead line ("We've shot over") — sits tight against the number below */
+.fc-line-lead {
+  margin-bottom: -8px;
+}
+
 .fc-line em.accent-serif {
   font-variant-numeric: tabular-nums;
 }
@@ -804,7 +809,7 @@ body.scrolled .hero-scroll-indicator {
    clearly dominant. Italic gold Cormorant matches site emphasis pattern. */
 .fc-bignum {
   display: block;
-  margin: 4px 0;
+  margin: 0;
   line-height: 0.95;
 }
 
@@ -3016,8 +3021,9 @@ main, section, footer {
   .foundation { padding: 60px 20px; }
   .foundation-inner::before { margin-bottom: 24px; }
   .foundation-inner::after { margin-top: 24px; }
-  .foundation-callout { gap: 4px; }
+  .foundation-callout { gap: 10px; }
   .fc-line { font-size: clamp(16px, 4.5vw, 18px); }
+  .fc-line-lead { margin-bottom: -6px; }
   .fc-bignum em.accent-serif { font-size: clamp(58px, 17vw, 96px); }
   .foundation-tagline {
     margin-top: 22px;
