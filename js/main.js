@@ -20,29 +20,12 @@
     }
   });
 
-  // ═══ LOGO CLICK — animated scroll to top, ScrollTrigger-friendly ═══
-  // We can't use native smooth-scroll because passing rapidly through pinned
-  // sections causes pin-flicker. We can't jump instantly because that leaves
-  // pinned sections in a stale state. Instead, we step scroll position down
-  // with requestAnimationFrame so ScrollTrigger's scroll observer tracks every
-  // frame and pinned sections release naturally on the way past.
+  // ═══ LOGO CLICK — instant scroll to top ═══
   const navLogo = document.querySelector('.nav-logo');
   if (navLogo) {
     navLogo.addEventListener('click', (e) => {
       e.preventDefault();
-      const startY = window.scrollY || window.pageYOffset;
-      if (startY === 0) return;
-      const duration = Math.min(900, Math.max(400, startY * 0.35)); // 400-900ms based on distance
-      const startTime = performance.now();
-      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-      function step(now) {
-        const elapsed = now - startTime;
-        const t = Math.min(elapsed / duration, 1);
-        const y = startY * (1 - easeOutCubic(t));
-        window.scrollTo(0, y);
-        if (t < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+      window.scrollTo(0, 0);
     });
   }
 
@@ -170,12 +153,16 @@
   }
 
   // ═══ AGENCY OFFER — sequenced Path 1 then Path 2 reveal ═══
-  // When the section enters viewport, Path 1 fades up first (card + inner stagger),
-  // then ~700ms later Path 2 follows. This guides the eye top-to-bottom.
+  // DEFENSIVE PATTERN: cards are visible by default in CSS. JS opts them
+  // into the load animation by adding .needs-reveal to the section. If JS
+  // throws or fails to run, cards stay visible — never invisible.
   const offerSection = document.querySelector('.agency-offer');
   if (offerSection) {
     const offerCards = Array.from(offerSection.querySelectorAll('.offer-card'));
     const PATH_GAP = 700; // ms between Path 1 and Path 2 starting
+
+    // Step 1: opt into the animation. CSS hides cards from this moment.
+    offerSection.classList.add('needs-reveal');
 
     const runOfferReveal = () => {
       offerCards.forEach((card, i) => {
@@ -190,7 +177,6 @@
       offerCards.forEach((card) => {
         if (card._revealTimer) clearTimeout(card._revealTimer);
         card.classList.remove('revealed');
-        // Force reflow so re-entry replays the animation cleanly
         void card.offsetHeight;
       });
     };
@@ -205,23 +191,22 @@
       onLeaveBack: resetOfferReveal
     });
 
-    // SAFETY NET: if the section is already in viewport at page load,
-    // trigger immediately. Otherwise it can stay invisible if user reloads
-    // while scrolled past it.
+    // SAFETY NET: if section is in viewport at page load, fire immediately.
     const rect = offerSection.getBoundingClientRect();
     if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
       runOfferReveal();
     }
 
-    // FAILSAFE: if for any reason the cards haven't revealed within 4 seconds
-    // of page load, force them visible so users never see an empty section.
+    // FAILSAFE: after 3s, force-reveal anything still hidden. Last line of
+    // defence. Combined with the visible-by-default CSS, users will never
+    // see permanently empty cards.
     setTimeout(() => {
       offerCards.forEach((card) => {
         if (!card.classList.contains('revealed')) {
           card.classList.add('revealed');
         }
       });
-    }, 4000);
+    }, 3000);
   }
 
   // ═══ PARALLAX ═══
