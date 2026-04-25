@@ -1691,87 +1691,188 @@ body.scrolled .hero-scroll-indicator {
 }
 
 
-/* ═══ AGENCY METRICS ═══ */
-.agency-metrics {
-  padding: 40px 48px 60px;
-  max-width: 1200px;
+/* ═══ AGENCY OFFER — Two-path grid (Done For You / Train Your Team) ═══ */
+.agency-offer {
+  padding: 40px 48px 80px;
+  max-width: 1300px;
   margin: 0 auto;
   position: relative;
 }
 
-/* Gold vertical scan line that grows as user scrolls through the metrics */
-.metric-scan {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2px;
-  height: 0%;
-  background: linear-gradient(180deg, var(--gold), rgba(232, 168, 56, 0.4));
-  box-shadow: 0 0 12px rgba(232, 168, 56, 0.6);
-  z-index: 1;
-  pointer-events: none;
-  transition: height 0.2s linear;
-}
-
-.metric-row {
+.offer-grid {
   display: grid;
-  grid-template-columns: minmax(320px, auto) minmax(200px, 260px) 1fr;
-  gap: 48px;
-  align-items: baseline;
-  padding: 56px 0;
-  border-top: 1px solid var(--white-faint);
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
   position: relative;
 }
 
-.metric-row:last-child {
+/* Subtle vertical divider between the two paths */
+.offer-grid::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(232, 168, 56, 0.35), transparent);
+  pointer-events: none;
+}
+
+.offer-card {
+  position: relative;
+  padding: 56px 48px 48px;
+  border: 1px solid var(--white-faint);
+  border-radius: 10px;
+  background: rgba(6, 6, 11, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+/* Top accent line on each card — fades in on hover */
+.offer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.offer-card:hover {
+  border-color: rgba(232, 168, 56, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.offer-card:hover::before {
+  opacity: 1;
+}
+
+.offer-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+
+.offer-title {
+  font-size: clamp(34px, 4.2vw, 54px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.offer-title em.accent-serif {
+  font-size: 1em;
+}
+
+.offer-lead {
+  font-size: clamp(15px, 1.4vw, 17px);
+  color: var(--white-dim);
+  line-height: 1.55;
+  margin-bottom: 36px;
+  max-width: 420px;
+}
+
+.offer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.offer-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 16px 0;
+  border-top: 1px solid var(--white-faint);
+  font-size: 15px;
+  color: var(--white);
+  line-height: 1.45;
+}
+
+.offer-list li:last-child {
   border-bottom: 1px solid var(--white-faint);
 }
 
-/* Staggered reveals: number scales up, label slides from left, description slides from right */
-.metric-row .metric-number,
-.metric-row .metric-label,
-.metric-row .metric-desc {
-  opacity: 0;
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.metric-row .metric-number { transform: scale(0.8); }
-.metric-row .metric-label  { transform: translateX(-30px); }
-.metric-row .metric-desc   { transform: translateX(40px); }
-
-.metric-row.visible .metric-number,
-.metric-row.visible .metric-label,
-.metric-row.visible .metric-desc {
-  opacity: 1;
-  transform: none;
-}
-
-.metric-row.visible .metric-label { transition-delay: 0.12s; }
-.metric-row.visible .metric-desc  { transition-delay: 0.24s; }
-
-.metric-number {
-  font-size: clamp(56px, 7.5vw, 110px);
-  font-weight: 800;
+.offer-li-num {
+  flex-shrink: 0;
+  font-size: 11px;
+  letter-spacing: 2px;
   color: var(--gold);
-  letter-spacing: -0.02em;
-  line-height: 1;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 40px rgba(232, 168, 56, 0.25);
+  width: 22px;
 }
 
-.metric-label {
-  font-size: 14px;
-  letter-spacing: 3px;
+.offer-li-text {
+  flex: 1;
+}
+
+.offer-foot {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.3vw, 17px);
+  color: rgba(232, 168, 56, 0.85);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+
+/* ─── Bottom emphasis rows (platform / creative / existing assets) ─── */
+.agency-foot {
+  margin-top: 64px;
+  padding: 40px 48px;
+  border-top: 1px solid var(--white-faint);
+  border-bottom: 1px solid var(--white-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.agency-foot-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--white-faint);
+}
+
+.agency-foot-row:last-child {
+  border-bottom: 0;
+}
+
+.agency-foot-label {
+  font-size: 11px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--white);
-  font-weight: 500;
+  color: var(--gold);
+  font-weight: 600;
 }
 
-.metric-desc {
-  font-size: 15px;
-  color: var(--white-dim);
-  line-height: 1.6;
+.agency-foot-value {
+  font-size: clamp(17px, 1.7vw, 22px);
+  color: var(--white);
+  line-height: 1.4;
+  letter-spacing: 0.1px;
+  font-weight: 400;
+}
+
+.agency-foot-value em.accent-serif {
+  font-size: 1em;
 }
 
 /* ═══ UNIFIED MODEL ═══ */
@@ -2486,12 +2587,14 @@ main, section, footer {
 
   .cap-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 
-  .metric-row {
+  .agency-offer { padding: 40px 32px 60px; }
+  .offer-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 40px 0;
+    gap: 24px;
   }
-  .metric-number { font-size: clamp(48px, 7vw, 72px); }
+  .offer-grid::after { display: none; }
+  .offer-card { padding: 44px 36px 40px; }
+  .agency-foot { padding: 32px 36px; }
 
   .bf-grid { grid-template-columns: 1fr; gap: 24px; }
   .bf-item { padding: 40px 32px; }
@@ -2704,18 +2807,28 @@ main, section, footer {
   .phone-app-headline { font-size: 24px; }
   .phone-app-sub { font-size: 10px; }
 
-  /* Agency metrics */
-  .agency-metrics { padding: 60px 20px 100px; }
-  .metric-row {
-    padding: 36px 0;
+  /* Agency offer */
+  .agency-offer { padding: 40px 20px 80px; }
+  .offer-card { padding: 36px 24px 32px; }
+  .offer-tag { font-size: 10px; letter-spacing: 3px; margin-bottom: 20px; }
+  .offer-title {
+    font-size: clamp(30px, 9vw, 42px);
+    margin-bottom: 14px;
+  }
+  .offer-lead { font-size: 14px; margin-bottom: 24px; }
+  .offer-list { margin-bottom: 24px; }
+  .offer-list li { font-size: 14px; padding: 14px 0; gap: 14px; }
+  .offer-li-num { font-size: 10px; letter-spacing: 1.5px; width: 18px; }
+  .offer-foot { font-size: 14px; }
+
+  .agency-foot { margin-top: 40px; padding: 24px 20px; }
+  .agency-foot-row {
+    grid-template-columns: 1fr;
     gap: 8px;
+    padding: 18px 0;
   }
-  .metric-number { font-size: clamp(44px, 12vw, 64px); }
-  .metric-label {
-    font-size: 12px;
-    letter-spacing: 2.5px;
-  }
-  .metric-desc { font-size: 14px; line-height: 1.5; }
+  .agency-foot-label { font-size: 10px; letter-spacing: 3px; }
+  .agency-foot-value { font-size: 16px; line-height: 1.4; }
 
   /* Unified statement */
   .unified { padding: 120px 20px; }
