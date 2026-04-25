@@ -20,6 +20,19 @@
     }
   });
 
+  // ═══ LOGO CLICK — instant scroll to top (avoids pin-flicker on smooth scroll) ═══
+  // Native smooth-scroll through the pinned daylight/twilight section causes
+  // the background image to flash over the hero. Instant jump avoids it.
+  const navLogo = document.querySelector('.nav-logo[href="#top"]');
+  if (navLogo) {
+    navLogo.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      // Force ScrollTrigger to recalculate after the jump
+      ScrollTrigger.refresh();
+    });
+  }
+
   // ═══ REVEAL ANIMATIONS — re-triggerable only when scrolling back up past element ═══
   gsap.utils.toArray('.reveal').forEach((el) => {
     ScrollTrigger.create({
@@ -171,13 +184,31 @@
 
     ScrollTrigger.create({
       trigger: offerSection,
-      start: 'top 75%',
-      end: 'bottom 25%',
+      start: 'top 85%',
+      end: 'bottom 15%',
       onEnter: runOfferReveal,
       onEnterBack: runOfferReveal,
       onLeave: resetOfferReveal,
       onLeaveBack: resetOfferReveal
     });
+
+    // SAFETY NET: if the section is already in viewport at page load,
+    // trigger immediately. Otherwise it can stay invisible if user reloads
+    // while scrolled past it.
+    const rect = offerSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+      runOfferReveal();
+    }
+
+    // FAILSAFE: if for any reason the cards haven't revealed within 4 seconds
+    // of page load, force them visible so users never see an empty section.
+    setTimeout(() => {
+      offerCards.forEach((card) => {
+        if (!card.classList.contains('revealed')) {
+          card.classList.add('revealed');
+        }
+      });
+    }, 4000);
   }
 
   // ═══ PARALLAX ═══
