@@ -1714,7 +1714,7 @@ body.scrolled .hero-scroll-indicator {
 /* ═══ AGENCY OFFER — Two-path grid (Done For You / Train Your Team) ═══ */
 .agency-offer {
   padding: 40px 48px 80px;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative;
 }
@@ -1754,44 +1754,6 @@ body.scrolled .hero-scroll-indicator {
     box-shadow 0.4s ease;
 }
 
-/* Cards default to fully visible. JS can opt-in to the load animation
-   by adding .needs-reveal to the section before sequencing. If JS never
-   runs (or fails), users still see fully populated cards. */
-.agency-offer.needs-reveal .offer-card {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-.agency-offer.needs-reveal .offer-card.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Inner-element stagger ALSO opt-in — same defensive pattern.
-   Default: all inner elements fully visible. */
-.agency-offer.needs-reveal .offer-card .offer-title,
-.agency-offer.needs-reveal .offer-card .offer-list li {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.agency-offer.needs-reveal .offer-card.revealed .offer-title,
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger delays — only apply within .needs-reveal */
-.agency-offer.needs-reveal .offer-card.revealed .offer-title    { transition-delay: 0.10s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.30s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.40s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.50s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.60s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.70s; }
-
 /* Top accent line on each card — fades in on hover */
 .offer-card::before {
   content: '';
@@ -1819,13 +1781,18 @@ body.scrolled .hero-scroll-indicator {
   font-size: clamp(34px, 4.2vw, 54px);
   font-weight: 700;
   color: var(--white);
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  margin-bottom: 36px;
+  margin-bottom: 14px;
 }
 
-.offer-title em.accent-serif {
-  font-size: 1em;
+/* Subtitle under each card heading — short prose line */
+.offer-sub {
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: var(--white-dim);
+  line-height: 1.5;
+  margin-bottom: 36px;
+  letter-spacing: 0.1px;
 }
 
 .offer-list {
