@@ -471,7 +471,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ INTRO ═══ */
 .intro {
-  padding: 110px 48px;
+  padding: 70px 48px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -575,7 +575,7 @@ body.scrolled .hero-scroll-indicator {
   width: 0;
   background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.5), transparent);
   margin: 60px auto 40px;
-  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
 }
 
 /* 3-column grid */
@@ -597,9 +597,9 @@ body.scrolled .hero-scroll-indicator {
     transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.intro-col-1 { transition-delay: 1.4s; }
-.intro-col-2 { transition-delay: 1.9s; }
-.intro-col-3 { transition-delay: 2.4s; }
+.intro-col-1 { transition-delay: 0.40s; }
+.intro-col-2 { transition-delay: 0.70s; }
+.intro-col-3 { transition-delay: 1.00s; }
 
 /* Vertical gold dividers between columns */
 .intro-col + .intro-col::before {
@@ -611,7 +611,7 @@ body.scrolled .hero-scroll-indicator {
   height: 0;
   background: linear-gradient(180deg, transparent, rgba(232, 168, 56, 0.4), transparent);
   transform: translateY(-50%);
-  transition: height 1s cubic-bezier(0.16, 1, 0.3, 1) 3s;
+  transition: height 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.3s;
 }
 
 .intro-ghost {
@@ -731,7 +731,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ FOUNDATION ═══ */
 .foundation {
-  padding: 120px 48px;
+  padding: 75px 48px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -807,7 +807,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ SECTION HEADER (Media / Studio / Agency) ═══ */
 .section-header {
-  padding: 80px 48px 60px;
+  padding: 60px 48px 40px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -1138,7 +1138,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ CAPABILITIES GRID ═══ */
 .capabilities {
-  padding: 110px 48px;
+  padding: 70px 48px;
   max-width: 1300px;
   margin: 0 auto;
   position: relative;
@@ -1181,7 +1181,7 @@ body.scrolled .hero-scroll-indicator {
 
 .cap-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   position: relative;
   z-index: 1;
 }
@@ -1309,7 +1309,7 @@ body.scrolled .hero-scroll-indicator {
 /* ═══ MOBILE MOMENT ═══ */
 /* ═══ MOBILE APP MOMENT — iPhone mockup ═══ */
 .mobile-moment {
-  padding: 120px 48px;
+  padding: 75px 48px;
   display: flex;
   justify-content: center;
   background: linear-gradient(180deg, transparent, rgba(232, 168, 56, 0.03), transparent);
@@ -1713,7 +1713,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ AGENCY OFFER — Two-path grid (Done For You / Train Your Team) ═══ */
 .agency-offer {
-  padding: 40px 48px 80px;
+  padding: 30px 48px 60px;
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -1922,14 +1922,14 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ BUILT FOR ═══ */
 .built-for {
-  padding: 110px 48px;
+  padding: 70px 48px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .bf-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
 }
 
 .bf-label {
@@ -2151,7 +2151,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ CTA ═══ */
 .cta {
-  padding: 120px 48px;
+  padding: 75px 48px 90px;
   text-align: center;
   position: relative;
 }
@@ -2616,7 +2616,7 @@ main, section, footer {
   }
 
   /* Intro - Aventus Method */
-  .intro { padding: 100px 20px; }
+  .intro { padding: 60px 20px; }
   .intro-header { margin-bottom: 32px; }
   .intro-hairline { margin: 40px auto 32px; }
   .intro-title { font-size: clamp(36px, 11vw, 56px); margin-bottom: 20px; }
@@ -2635,7 +2635,7 @@ main, section, footer {
     transform: none;
     background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.4), transparent);
     opacity: 0;
-    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 3s;
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.3s;
   }
   #introBlock.visible .intro-col + .intro-col::before {
     height: 1px;
@@ -2654,7 +2654,7 @@ main, section, footer {
   }
 
   /* Foundation */
-  .foundation { padding: 120px 20px; }
+  .foundation { padding: 70px 20px; }
   .foundation-label { font-size: 10px; letter-spacing: 4px; margin-bottom: 24px; }
   .foundation-heading {
     font-size: clamp(32px, 10vw, 48px);
@@ -2676,7 +2676,7 @@ main, section, footer {
 
   /* Section headers */
   .section-header {
-    padding: 120px 20px 60px;
+    padding: 70px 20px 40px;
   }
   .section-label {
     font-size: 10px;
@@ -2745,8 +2745,8 @@ main, section, footer {
   .pin-progress-bar { width: 80px; }
 
   /* Studio Capabilities */
-  .capabilities { padding: 100px 20px; }
-  .cap-header { margin-bottom: 48px; }
+  .capabilities { padding: 60px 20px; }
+  .cap-header { margin-bottom: 32px; }
   .cap-label { font-size: 10px; letter-spacing: 4px; margin-bottom: 20px; }
   .cap-heading {
     font-size: clamp(28px, 8vw, 44px);
@@ -2758,7 +2758,7 @@ main, section, footer {
   .cap-item p { font-size: 13px; line-height: 1.5; }
 
   /* Mobile app moment - iPhone mockup */
-  .mobile-moment { padding: 100px 20px; }
+  .mobile-moment { padding: 70px 20px; }
   .mobile-scene {
     flex-direction: column;
     gap: 40px;
@@ -2772,7 +2772,7 @@ main, section, footer {
   .phone-app-sub { font-size: 10px; }
 
   /* Agency offer */
-  .agency-offer { padding: 40px 20px 80px; }
+  .agency-offer { padding: 30px 20px 60px; }
   .offer-card { padding: 36px 24px 32px; }
   .offer-title {
     font-size: clamp(28px, 8.5vw, 38px);
@@ -2798,8 +2798,8 @@ main, section, footer {
   .unified-body { font-size: 15px; line-height: 1.6; }
 
   /* Built For */
-  .built-for { padding: 100px 20px; }
-  .bf-header { margin-bottom: 48px; }
+  .built-for { padding: 60px 20px; }
+  .bf-header { margin-bottom: 32px; }
   .bf-label { font-size: 10px; letter-spacing: 4px; margin-bottom: 20px; }
   .bf-heading {
     font-size: clamp(28px, 8vw, 40px);
@@ -2826,7 +2826,7 @@ main, section, footer {
   }
 
   /* CTA */
-  .cta { padding: 120px 20px; }
+  .cta { padding: 70px 20px 80px; }
   .cta-heading {
     font-size: clamp(34px, 10vw, 56px);
     line-height: 1.1;
