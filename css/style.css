@@ -2543,14 +2543,14 @@ main, section, footer {
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 14px;
 }
 
 /* Question container — fieldset with no native browser styling */
 .cf-q {
   border: 1px solid var(--white-faint);
   border-radius: 10px;
-  padding: 28px 32px 32px;
+  padding: 22px 28px 24px;
   background: rgba(6, 6, 11, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2599,7 +2599,7 @@ main, section, footer {
   opacity: 0.85;
 }
 
-/* Question label */
+/* Question label — now a div, sits cleanly inside the box */
 .cf-label {
   display: flex;
   align-items: baseline;
@@ -2608,7 +2608,7 @@ main, section, footer {
   font-weight: 500;
   color: var(--white);
   letter-spacing: 0.2px;
-  margin-bottom: 18px;
+  margin: 0 0 14px;
   padding: 0;
   text-align: left;
   width: 100%;
@@ -2723,6 +2723,55 @@ main, section, footer {
   -webkit-text-fill-color: var(--white);
   -webkit-box-shadow: 0 0 0 1000px rgba(6, 6, 11, 0.95) inset;
   caret-color: var(--white);
+}
+
+/* ─── Next button (text/textarea questions) ─── */
+.cf-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(232, 168, 56, 0.5);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  align-self: flex-start;
+}
+
+.cf-q {
+  display: flex;
+  flex-direction: column;
+}
+
+.cf-next:hover {
+  background: rgba(232, 168, 56, 0.12);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.cf-next:active {
+  transform: translateY(0);
+}
+
+.cf-next:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Hide Next button once that question is complete */
+.cf-q.is-complete .cf-next {
+  display: none;
 }
 
 /* ─── Submit button ─── */
@@ -3149,15 +3198,15 @@ main, section, footer {
   /* Contact form mobile */
   .cf {
     margin-top: 40px;
-    gap: 16px;
+    gap: 12px;
   }
   .cf-q {
-    padding: 22px 22px 24px;
+    padding: 18px 20px 20px;
     border-radius: 8px;
   }
   .cf-q.is-complete::after {
-    top: 22px;
-    right: 22px;
+    top: 18px;
+    right: 18px;
     width: 20px;
     height: 20px;
     font-size: 11px;
@@ -3165,7 +3214,7 @@ main, section, footer {
   .cf-label {
     font-size: 14px;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .cf-num {
     font-size: 10px;
@@ -3182,6 +3231,12 @@ main, section, footer {
     padding: 12px 14px;
   }
   .cf-textarea { min-height: 90px; }
+  .cf-next {
+    margin-top: 12px;
+    padding: 9px 18px;
+    font-size: 11px;
+    letter-spacing: 1.8px;
+  }
   .cf-submit {
     padding: 16px 32px;
     font-size: 12px;
