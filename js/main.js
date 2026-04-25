@@ -40,12 +40,20 @@
     const statusEl = contactForm.querySelector('.cf-status');
     const submitBtn = contactForm.querySelector('.cf-submit');
 
-    // Determine if a question is "answered"
+    // Determine if a question is "answered".
+    // Radios: complete when one is checked.
+    // Text/textarea: complete only when the user has EXPLICITLY confirmed
+    //   (clicked Next, pressed Enter, or submitted). Just typing isn't enough.
+    //   We track confirmed state via a data attribute on the question.
     const isQuestionAnswered = (q) => {
       const radios = q.querySelectorAll('input[type="radio"]');
       if (radios.length) return Array.from(radios).some(r => r.checked);
-      const textInputs = q.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
-      return Array.from(textInputs).every(el => el.value.trim().length > 0);
+      // Text question — must be confirmed AND have content
+      if (q.dataset.confirmed === 'true') {
+        const textInputs = q.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+        return Array.from(textInputs).every(el => el.value.trim().length > 0);
+      }
+      return false;
     };
 
     // Refresh active/complete classes across all questions.
@@ -68,64 +76,89 @@
       }
     };
 
+    // Helper: mark a text question as confirmed and refresh state
+    const confirmTextQuestion = (q) => {
+      const field = q.querySelector('input:not([type="radio"]), textarea');
+      if (!field || field.value.trim().length === 0) {
+        // Empty: don't confirm. Just focus the field so user knows what to do.
+        if (field) field.focus();
+        return false;
+      }
+      q.dataset.confirmed = 'true';
+      refreshState();
+      return true;
+    };
+
     // Helper: advance from a question to the next .cf-q
     // Scrolls it into view and focuses its first interactive field.
     const advanceFrom = (currentQ) => {
       if (!currentQ) return;
       const nextQ = currentQ.nextElementSibling;
       if (nextQ && nextQ.classList && nextQ.classList.contains('cf-q')) {
-        // Smooth-scroll the next question into view
         nextQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Focus its first input/textarea (skip if it's a radio group — let user click)
         setTimeout(() => {
           const firstField = nextQ.querySelector('input:not([type="radio"]), textarea');
           if (firstField) firstField.focus({ preventScroll: true });
         }, 350);
       } else {
-        // No next question — we're at the last one. Focus submit button.
         if (submitBtn) submitBtn.focus({ preventScroll: true });
       }
     };
 
-    // Wire change/input events on all form fields
+    // Wire events on form fields
     contactForm.querySelectorAll('input, textarea').forEach((el) => {
-      el.addEventListener('change', refreshState);
-      el.addEventListener('input', refreshState);
-
-      // Radio: selecting an option auto-advances
+      // Radio: selecting an option auto-advances and marks complete
       if (el.type === 'radio') {
         el.addEventListener('change', () => {
+          refreshState();
           advanceFrom(el.closest('.cf-q'));
         });
       }
 
-      // Text/email/tel: pressing Enter advances (textarea Enter still adds newline)
+      // Text/email/tel: only listen to Enter for advance.
+      // No 'input' listener — typing does NOT change state.
+      // If user edits a previously-confirmed field, un-confirm it so they
+      // have to press Next/Enter again to lock it back in.
       if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'email' || el.type === 'tel')) {
         el.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            // Only advance if the field has content
-            if (el.value.trim().length > 0) {
-              refreshState();
-              advanceFrom(el.closest('.cf-q'));
+            const q = el.closest('.cf-q');
+            if (confirmTextQuestion(q)) {
+              advanceFrom(q);
             }
+          }
+        });
+        el.addEventListener('input', () => {
+          const q = el.closest('.cf-q');
+          if (q.dataset.confirmed === 'true') {
+            q.dataset.confirmed = 'false';
+            refreshState();
+          }
+        });
+      }
+
+      // Textarea: same un-confirm behaviour on input. Enter doesn't advance
+      // (Enter inserts a newline, which is normal textarea UX). User clicks
+      // the Next button to advance.
+      if (el.tagName === 'TEXTAREA') {
+        el.addEventListener('input', () => {
+          const q = el.closest('.cf-q');
+          if (q.dataset.confirmed === 'true') {
+            q.dataset.confirmed = 'false';
+            refreshState();
           }
         });
       }
     });
 
-    // Next button click: validate field has content, then advance
+    // Next button click: confirm and advance
     contactForm.querySelectorAll('.cf-next').forEach((btn) => {
       btn.addEventListener('click', () => {
         const q = btn.closest('.cf-q');
-        const field = q.querySelector('input:not([type="radio"]), textarea');
-        if (field && field.value.trim().length === 0) {
-          // Empty: just focus the field, don't advance
-          field.focus();
-          return;
+        if (confirmTextQuestion(q)) {
+          advanceFrom(q);
         }
-        refreshState();
-        advanceFrom(q);
       });
     });
 
