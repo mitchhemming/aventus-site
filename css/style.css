@@ -2725,9 +2725,9 @@ main, section, footer {
   caret-color: var(--white);
 }
 
-/* ─── Next button (text/textarea questions) ─── */
+/* Next button — hidden by default. Only shown on the currently active question. */
 .cf-next {
-  display: inline-flex;
+  display: none;
   align-items: center;
   gap: 8px;
   margin-top: 14px;
@@ -2749,6 +2749,11 @@ main, section, footer {
   align-self: flex-start;
 }
 
+/* Show Next only on the active question (and only if it's not yet complete) */
+.cf-q.is-active:not(.is-complete) .cf-next {
+  display: inline-flex;
+}
+
 .cf-q {
   display: flex;
   flex-direction: column;
@@ -2767,11 +2772,6 @@ main, section, footer {
 .cf-next:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
-}
-
-/* Hide Next button once that question is complete */
-.cf-q.is-complete .cf-next {
-  display: none;
 }
 
 /* ─── Submit button ─── */
