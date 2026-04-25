@@ -798,7 +798,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* Lead line ("We've shot over") — sits tight against the number below */
 .fc-line-lead {
-  margin-bottom: -8px;
+  margin-bottom: -22px;
 }
 
 .fc-line em.accent-serif {
@@ -3023,7 +3023,7 @@ main, section, footer {
   .foundation-inner::after { margin-top: 24px; }
   .foundation-callout { gap: 10px; }
   .fc-line { font-size: clamp(16px, 4.5vw, 18px); }
-  .fc-line-lead { margin-bottom: -6px; }
+  .fc-line-lead { margin-bottom: -16px; }
   .fc-bignum em.accent-serif { font-size: clamp(58px, 17vw, 96px); }
   .foundation-tagline {
     margin-top: 22px;
