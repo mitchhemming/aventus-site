@@ -1769,11 +1769,8 @@ body.scrolled .hero-scroll-indicator {
 
 /* Inner-element stagger ALSO opt-in — same defensive pattern.
    Default: all inner elements fully visible. */
-.agency-offer.needs-reveal .offer-card .offer-tag,
 .agency-offer.needs-reveal .offer-card .offer-title,
-.agency-offer.needs-reveal .offer-card .offer-lead,
-.agency-offer.needs-reveal .offer-card .offer-list li,
-.agency-offer.needs-reveal .offer-card .offer-foot {
+.agency-offer.needs-reveal .offer-card .offer-list li {
   opacity: 0;
   transform: translateY(14px);
   transition:
@@ -1781,25 +1778,19 @@ body.scrolled .hero-scroll-indicator {
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.agency-offer.needs-reveal .offer-card.revealed .offer-tag,
 .agency-offer.needs-reveal .offer-card.revealed .offer-title,
-.agency-offer.needs-reveal .offer-card.revealed .offer-lead,
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li,
-.agency-offer.needs-reveal .offer-card.revealed .offer-foot {
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Stagger delays — only apply within .needs-reveal */
-.agency-offer.needs-reveal .offer-card.revealed .offer-tag      { transition-delay: 0.10s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-title    { transition-delay: 0.20s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-lead     { transition-delay: 0.35s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.50s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.60s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.70s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.80s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.90s; }
-.agency-offer.needs-reveal .offer-card.revealed .offer-foot     { transition-delay: 1.05s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-title    { transition-delay: 0.10s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.30s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.40s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.50s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.60s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.70s; }
 
 /* Top accent line on each card — fades in on hover */
 .offer-card::before {
@@ -1824,53 +1815,35 @@ body.scrolled .hero-scroll-indicator {
   opacity: 1;
 }
 
-.offer-tag {
-  display: inline-block;
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 600;
-  margin-bottom: 28px;
-}
-
 .offer-title {
   font-size: clamp(34px, 4.2vw, 54px);
   font-weight: 700;
   color: var(--white);
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  margin-bottom: 36px;
 }
 
 .offer-title em.accent-serif {
   font-size: 1em;
 }
 
-.offer-lead {
-  font-size: clamp(17px, 1.55vw, 19px);
-  color: var(--white-dim);
-  line-height: 1.6;
-  margin-bottom: 36px;
-  max-width: 460px;
-}
-
 .offer-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 36px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
+/* List items use a gold dot marker via ::before. Vertical hairlines between
+   items keep the editorial rhythm and match the rest of the site. */
 .offer-list li {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  padding: 18px 0;
+  position: relative;
+  padding: 18px 0 18px 28px;
   border-top: 1px solid var(--white-faint);
-  font-size: 16px;
+  font-size: 17px;
   color: var(--white);
   line-height: 1.5;
 }
@@ -1879,27 +1852,17 @@ body.scrolled .hero-scroll-indicator {
   border-bottom: 1px solid var(--white-faint);
 }
 
-.offer-li-num {
-  flex-shrink: 0;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  width: 22px;
-}
-
-.offer-li-text {
-  flex: 1;
-}
-
-.offer-foot {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: clamp(17px, 1.45vw, 20px);
-  color: rgba(232, 168, 56, 0.9);
-  letter-spacing: 0.2px;
-  line-height: 1.4;
+.offer-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(232, 168, 56, 0.5);
 }
 
 /* ═══ UNIFIED MODEL ═══ */
@@ -2844,16 +2807,19 @@ main, section, footer {
   /* Agency offer */
   .agency-offer { padding: 40px 20px 80px; }
   .offer-card { padding: 36px 24px 32px; }
-  .offer-tag { font-size: 10px; letter-spacing: 3px; margin-bottom: 20px; }
   .offer-title {
-    font-size: clamp(30px, 9vw, 42px);
-    margin-bottom: 14px;
+    font-size: clamp(28px, 8.5vw, 38px);
+    margin-bottom: 24px;
   }
-  .offer-lead { font-size: 16px; margin-bottom: 24px; line-height: 1.55; }
-  .offer-list { margin-bottom: 24px; }
-  .offer-list li { font-size: 15px; padding: 16px 0; gap: 14px; line-height: 1.5; }
-  .offer-li-num { font-size: 10px; letter-spacing: 1.5px; width: 18px; }
-  .offer-foot { font-size: 16px; }
+  .offer-list li {
+    font-size: 15px;
+    padding: 14px 0 14px 24px;
+    line-height: 1.5;
+  }
+  .offer-list li::before {
+    width: 6px;
+    height: 6px;
+  }
 
   /* Unified statement */
   .unified { padding: 120px 20px; }
@@ -2981,11 +2947,8 @@ main, section, footer {
   .reveal { opacity: 1; transform: none; }
   /* Offer cards: bypass JS-triggered reveal entirely */
   .offer-card,
-  .offer-card .offer-tag,
   .offer-card .offer-title,
-  .offer-card .offer-lead,
-  .offer-card .offer-list li,
-  .offer-card .offer-foot {
+  .offer-card .offer-list li {
     opacity: 1 !important;
     transform: none !important;
   }
