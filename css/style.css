@@ -1747,9 +1747,6 @@ body.scrolled .hero-scroll-indicator {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   overflow: hidden;
-  /* Fade-up base state — JS toggles .revealed to animate in */
-  opacity: 0;
-  transform: translateY(40px);
   transition:
     opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1757,18 +1754,26 @@ body.scrolled .hero-scroll-indicator {
     box-shadow 0.4s ease;
 }
 
-.offer-card.revealed {
+/* Cards default to fully visible. JS can opt-in to the load animation
+   by adding .needs-reveal to the section before sequencing. If JS never
+   runs (or fails), users still see fully populated cards. */
+.agency-offer.needs-reveal .offer-card {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.agency-offer.needs-reveal .offer-card.revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Inner elements stagger in AFTER the card fades up.
-   Each child has its own delay so the card "fills with content" line by line. */
-.offer-card .offer-tag,
-.offer-card .offer-title,
-.offer-card .offer-lead,
-.offer-card .offer-list li,
-.offer-card .offer-foot {
+/* Inner-element stagger ALSO opt-in — same defensive pattern.
+   Default: all inner elements fully visible. */
+.agency-offer.needs-reveal .offer-card .offer-tag,
+.agency-offer.needs-reveal .offer-card .offer-title,
+.agency-offer.needs-reveal .offer-card .offer-lead,
+.agency-offer.needs-reveal .offer-card .offer-list li,
+.agency-offer.needs-reveal .offer-card .offer-foot {
   opacity: 0;
   transform: translateY(14px);
   transition:
@@ -1776,25 +1781,25 @@ body.scrolled .hero-scroll-indicator {
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.offer-card.revealed .offer-tag,
-.offer-card.revealed .offer-title,
-.offer-card.revealed .offer-lead,
-.offer-card.revealed .offer-list li,
-.offer-card.revealed .offer-foot {
+.agency-offer.needs-reveal .offer-card.revealed .offer-tag,
+.agency-offer.needs-reveal .offer-card.revealed .offer-title,
+.agency-offer.needs-reveal .offer-card.revealed .offer-lead,
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li,
+.agency-offer.needs-reveal .offer-card.revealed .offer-foot {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Stagger delays — relative to card's own .revealed firing */
-.offer-card.revealed .offer-tag      { transition-delay: 0.10s; }
-.offer-card.revealed .offer-title    { transition-delay: 0.20s; }
-.offer-card.revealed .offer-lead     { transition-delay: 0.35s; }
-.offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.50s; }
-.offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.60s; }
-.offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.70s; }
-.offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.80s; }
-.offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.90s; }
-.offer-card.revealed .offer-foot     { transition-delay: 1.05s; }
+/* Stagger delays — only apply within .needs-reveal */
+.agency-offer.needs-reveal .offer-card.revealed .offer-tag      { transition-delay: 0.10s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-title    { transition-delay: 0.20s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-lead     { transition-delay: 0.35s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.50s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.60s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.70s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.80s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.90s; }
+.agency-offer.needs-reveal .offer-card.revealed .offer-foot     { transition-delay: 1.05s; }
 
 /* Top accent line on each card — fades in on hover */
 .offer-card::before {
@@ -1809,13 +1814,13 @@ body.scrolled .hero-scroll-indicator {
   transition: opacity 0.4s ease;
 }
 
-.offer-card.revealed:hover {
+.offer-card:hover {
   border-color: rgba(232, 168, 56, 0.4);
   transform: translateY(-4px);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
-.offer-card.revealed:hover::before {
+.offer-card:hover::before {
   opacity: 1;
 }
 
