@@ -177,41 +177,38 @@
       onLeaveBack: () => mobileMoment.classList.remove('in-view')
     });
 
-    // Phone drifts up with a subtle rotate as the user scrolls through.
-    // yPercent negative = moves up relative to its own height.
-    // rotate: small tilt going from +3 → -3 for cinematic feel.
+    // Phone drifts vertically through the section as the user scrolls.
+    // No rotation, no scale — sits perfectly upright the whole time.
+    // 50% total Y range = strong, noticeable movement.
     if (phone) {
       gsap.fromTo(phone,
-        { yPercent: 18, rotate: 3, scale: 0.92 },
+        { yPercent: 25 },
         {
-          yPercent: -18,
-          rotate: -3,
-          scale: 1.02,
+          yPercent: -25,
           ease: 'none',
           scrollTrigger: {
             trigger: mobileMoment,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.2
+            scrub: 0.8
           }
         }
       );
     }
 
-    // Side text parallaxes at a slower rate in the opposite direction
-    // so the phone and text "separate" as the section scrolls by
+    // Side text parallaxes hard in the OPPOSITE direction so phone and text
+    // visibly separate as the section scrolls past. 40% total range.
     if (mobileSide) {
       gsap.fromTo(mobileSide,
-        { yPercent: -12, opacity: 0.4 },
+        { yPercent: -20 },
         {
-          yPercent: 12,
-          opacity: 1,
+          yPercent: 20,
           ease: 'none',
           scrollTrigger: {
             trigger: mobileMoment,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.4
+            scrub: 0.8
           }
         }
       );
