@@ -20,16 +20,29 @@
     }
   });
 
-  // ═══ LOGO CLICK — instant scroll to top (avoids pin-flicker on smooth scroll) ═══
-  // Native smooth-scroll through the pinned daylight/twilight section causes
-  // the background image to flash over the hero. Instant jump avoids it.
-  const navLogo = document.querySelector('.nav-logo[href="#top"]');
+  // ═══ LOGO CLICK — animated scroll to top, ScrollTrigger-friendly ═══
+  // We can't use native smooth-scroll because passing rapidly through pinned
+  // sections causes pin-flicker. We can't jump instantly because that leaves
+  // pinned sections in a stale state. Instead, we step scroll position down
+  // with requestAnimationFrame so ScrollTrigger's scroll observer tracks every
+  // frame and pinned sections release naturally on the way past.
+  const navLogo = document.querySelector('.nav-logo');
   if (navLogo) {
     navLogo.addEventListener('click', (e) => {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'auto' });
-      // Force ScrollTrigger to recalculate after the jump
-      ScrollTrigger.refresh();
+      const startY = window.scrollY || window.pageYOffset;
+      if (startY === 0) return;
+      const duration = Math.min(900, Math.max(400, startY * 0.35)); // 400-900ms based on distance
+      const startTime = performance.now();
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+      function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        const y = startY * (1 - easeOutCubic(t));
+        window.scrollTo(0, y);
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     });
   }
 
