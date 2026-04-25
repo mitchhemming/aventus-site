@@ -143,6 +143,43 @@
     });
   }
 
+  // ═══ AGENCY OFFER — sequenced Path 1 then Path 2 reveal ═══
+  // When the section enters viewport, Path 1 fades up first (card + inner stagger),
+  // then ~700ms later Path 2 follows. This guides the eye top-to-bottom.
+  const offerSection = document.querySelector('.agency-offer');
+  if (offerSection) {
+    const offerCards = Array.from(offerSection.querySelectorAll('.offer-card'));
+    const PATH_GAP = 700; // ms between Path 1 and Path 2 starting
+
+    const runOfferReveal = () => {
+      offerCards.forEach((card, i) => {
+        if (card._revealTimer) clearTimeout(card._revealTimer);
+        card._revealTimer = setTimeout(() => {
+          card.classList.add('revealed');
+        }, i * PATH_GAP);
+      });
+    };
+
+    const resetOfferReveal = () => {
+      offerCards.forEach((card) => {
+        if (card._revealTimer) clearTimeout(card._revealTimer);
+        card.classList.remove('revealed');
+        // Force reflow so re-entry replays the animation cleanly
+        void card.offsetHeight;
+      });
+    };
+
+    ScrollTrigger.create({
+      trigger: offerSection,
+      start: 'top 75%',
+      end: 'bottom 25%',
+      onEnter: runOfferReveal,
+      onEnterBack: runOfferReveal,
+      onLeave: resetOfferReveal,
+      onLeaveBack: resetOfferReveal
+    });
+  }
+
   // ═══ PARALLAX ═══
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
     const speed = parseFloat(el.dataset.parallax || '0.3');
