@@ -731,7 +731,7 @@ body.scrolled .hero-scroll-indicator {
 
 /* ═══ FOUNDATION ═══ */
 .foundation {
-  padding: 75px 48px;
+  padding: 95px 48px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -762,26 +762,9 @@ body.scrolled .hero-scroll-indicator {
   z-index: 1;
 }
 
-/* Hairlines top + bottom — frame the callout as a deliberate section */
-.foundation-inner::before,
-.foundation-inner::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 1px;
-  margin: 0 auto;
-  background: linear-gradient(90deg, transparent, rgba(232, 168, 56, 0.5), transparent);
-}
-
-.foundation-inner::before { margin-bottom: 36px; }
-.foundation-inner::after  { margin-top: 36px; }
-
-/* The single-line callout — small supporting text wrapping a massive number */
+/* Stacked block layout matching Option E mockup — lead line tight under
+   the number, description naturally spaced below, tagline at the bottom. */
 .foundation-callout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
   margin: 0;
   font-weight: 500;
   color: var(--white);
@@ -789,26 +772,32 @@ body.scrolled .hero-scroll-indicator {
   letter-spacing: 0.1px;
 }
 
-/* Supporting text lines — small, calm, reading like a caption */
+/* Each line is a block-level span so margins control spacing */
+.fc-line,
+.fc-bignum {
+  display: block;
+}
+
+/* Lead line ("We've shot over") and description ("Vehicles and properties...")
+   share the same small caption-style sizing. */
 .fc-line {
   font-size: clamp(18px, 2vw, 26px);
   font-weight: 400;
   letter-spacing: 0.2px;
 }
 
-/* Lead line ("We've shot over") — sits tight against the number below */
-.fc-line-lead {
-  margin-bottom: -22px;
-}
-
 .fc-line em.accent-serif {
   font-variant-numeric: tabular-nums;
 }
 
-/* The hero number — scale-as-visual. Sized between supporting text but
-   clearly dominant. Italic gold Cormorant matches site emphasis pattern. */
+/* Lead line sits TIGHT to the number — pull it down with negative margin
+   so the gap closes visually. */
+.fc-line-lead {
+  margin-bottom: -22px;
+}
+
+/* The hero number — scale-as-visual */
 .fc-bignum {
-  display: block;
   margin: 0;
   line-height: 0.95;
 }
@@ -826,6 +815,11 @@ body.scrolled .hero-scroll-indicator {
   color: var(--gold);
   margin-left: 0.05em;
   vertical-align: 0.35em;
+}
+
+/* Description line — natural breathing room below the big number */
+.fc-line-desc {
+  margin-top: 14px;
 }
 
 /* Tagline — small, dim, italic-feeling without being italic */
@@ -3018,12 +3012,10 @@ main, section, footer {
   }
 
   /* Foundation */
-  .foundation { padding: 60px 20px; }
-  .foundation-inner::before { margin-bottom: 24px; }
-  .foundation-inner::after { margin-top: 24px; }
-  .foundation-callout { gap: 10px; }
+  .foundation { padding: 75px 20px; }
   .fc-line { font-size: clamp(16px, 4.5vw, 18px); }
   .fc-line-lead { margin-bottom: -16px; }
+  .fc-line-desc { margin-top: 10px; }
   .fc-bignum em.accent-serif { font-size: clamp(58px, 17vw, 96px); }
   .foundation-tagline {
     margin-top: 22px;
