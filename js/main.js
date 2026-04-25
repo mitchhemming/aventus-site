@@ -29,6 +29,122 @@
     });
   }
 
+  // ═══ CONTACT FORM — soft-highlight sequence + Formspree submission ═══
+  // All questions render at once. JS marks the next-uncompleted one as
+  // .is-active so it glows, and adds .is-complete to answered questions.
+  // Submission goes via fetch so the user stays on-page and we show a
+  // thank-you state without a redirect.
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    const questions = Array.from(contactForm.querySelectorAll('.cf-q'));
+    const statusEl = contactForm.querySelector('.cf-status');
+    const submitBtn = contactForm.querySelector('.cf-submit');
+
+    // Determine if a question is "answered"
+    const isQuestionAnswered = (q) => {
+      const radios = q.querySelectorAll('input[type="radio"]');
+      if (radios.length) return Array.from(radios).some(r => r.checked);
+      const textInputs = q.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+      return Array.from(textInputs).every(el => el.value.trim().length > 0);
+    };
+
+    // Refresh active/complete classes across all questions.
+    // The first unanswered question becomes .is-active.
+    const refreshState = () => {
+      let activeFound = false;
+      questions.forEach((q) => {
+        const answered = isQuestionAnswered(q);
+        q.classList.toggle('is-complete', answered);
+        if (!answered && !activeFound) {
+          q.classList.add('is-active');
+          activeFound = true;
+        } else {
+          q.classList.remove('is-active');
+        }
+      });
+      // If everything is answered, mark the last question active for visual continuity
+      if (!activeFound && questions.length) {
+        questions[questions.length - 1].classList.add('is-active');
+      }
+    };
+
+    // Wire change/input events on all form fields
+    contactForm.querySelectorAll('input, textarea').forEach((el) => {
+      el.addEventListener('change', refreshState);
+      el.addEventListener('input', refreshState);
+      // When a radio is selected, also auto-scroll the next question into view
+      if (el.type === 'radio') {
+        el.addEventListener('change', () => {
+          const currentQ = el.closest('.cf-q');
+          const nextQ = currentQ && currentQ.nextElementSibling;
+          if (nextQ && nextQ.classList && nextQ.classList.contains('cf-q')) {
+            // Tiny delay so the state class transition happens first
+            setTimeout(() => {
+              const firstField = nextQ.querySelector('input, textarea');
+              if (firstField && firstField.type !== 'radio') {
+                firstField.focus({ preventScroll: false });
+              }
+            }, 250);
+          }
+        });
+      }
+    });
+
+    // Set initial state
+    refreshState();
+
+    // Submit via fetch so we can show inline success/error without redirect
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Native validity check first
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        statusEl.textContent = 'Please complete all questions before submitting.';
+        statusEl.className = 'cf-status is-error';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const originalText = submitBtn.querySelector('.cf-submit-text').textContent;
+      submitBtn.querySelector('.cf-submit-text').textContent = 'Sending…';
+      statusEl.textContent = '';
+      statusEl.className = 'cf-status';
+
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          contactForm.classList.add('is-submitted');
+          // Scroll the thanks block into view
+          const thanks = contactForm.querySelector('.cf-thanks');
+          if (thanks) {
+            thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else {
+          const data = await response.json().catch(() => ({}));
+          const msg = (data.errors && data.errors[0] && data.errors[0].message)
+            ? data.errors[0].message
+            : 'Something went wrong. Please try again or email bookings@aventusmedia.com.au directly.';
+          statusEl.textContent = msg;
+          statusEl.className = 'cf-status is-error';
+          submitBtn.disabled = false;
+          submitBtn.querySelector('.cf-submit-text').textContent = originalText;
+        }
+      } catch (err) {
+        statusEl.textContent = 'Network error. Please try again or email bookings@aventusmedia.com.au directly.';
+        statusEl.className = 'cf-status is-error';
+        submitBtn.disabled = false;
+        submitBtn.querySelector('.cf-submit-text').textContent = originalText;
+      }
+    });
+  }
+
   // ═══ REVEAL ANIMATIONS — re-triggerable only when scrolling back up past element ═══
   gsap.utils.toArray('.reveal').forEach((el) => {
     ScrollTrigger.create({
