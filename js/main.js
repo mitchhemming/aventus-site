@@ -96,38 +96,6 @@
     });
   }
 
-  // ═══ METRIC ROWS — staggered reveal + vertical scan line growth ═══
-  const metricsSection = document.querySelector('.agency-metrics');
-  const metricScan = document.querySelector('.metric-scan');
-  if (metricsSection) {
-    // Stagger row visibility on scroll
-    const metricRows = metricsSection.querySelectorAll('.metric-row');
-    metricRows.forEach((row) => {
-      ScrollTrigger.create({
-        trigger: row,
-        start: 'top 85%',
-        onEnter: () => {
-          row.classList.add('visible');
-          row.querySelectorAll('.counter').forEach(animateCounter);
-        },
-        once: true
-      });
-    });
-
-    // Vertical scan line grows as scroll passes through section
-    if (metricScan) {
-      ScrollTrigger.create({
-        trigger: metricsSection,
-        start: 'top 70%',
-        end: 'bottom 80%',
-        scrub: 0.5,
-        onUpdate: (self) => {
-          metricScan.style.height = (self.progress * 100) + '%';
-        }
-      });
-    }
-  }
-
   // ═══ UNIFIED HEADING — cinematic entrance (4 directions staggered) ═══
   const unifiedHeading = document.getElementById('unifiedHeading');
   if (unifiedHeading) {
