@@ -68,26 +68,65 @@
       }
     };
 
+    // Helper: advance from a question to the next .cf-q
+    // Scrolls it into view and focuses its first interactive field.
+    const advanceFrom = (currentQ) => {
+      if (!currentQ) return;
+      const nextQ = currentQ.nextElementSibling;
+      if (nextQ && nextQ.classList && nextQ.classList.contains('cf-q')) {
+        // Smooth-scroll the next question into view
+        nextQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Focus its first input/textarea (skip if it's a radio group — let user click)
+        setTimeout(() => {
+          const firstField = nextQ.querySelector('input:not([type="radio"]), textarea');
+          if (firstField) firstField.focus({ preventScroll: true });
+        }, 350);
+      } else {
+        // No next question — we're at the last one. Focus submit button.
+        if (submitBtn) submitBtn.focus({ preventScroll: true });
+      }
+    };
+
     // Wire change/input events on all form fields
     contactForm.querySelectorAll('input, textarea').forEach((el) => {
       el.addEventListener('change', refreshState);
       el.addEventListener('input', refreshState);
-      // When a radio is selected, also auto-scroll the next question into view
+
+      // Radio: selecting an option auto-advances
       if (el.type === 'radio') {
         el.addEventListener('change', () => {
-          const currentQ = el.closest('.cf-q');
-          const nextQ = currentQ && currentQ.nextElementSibling;
-          if (nextQ && nextQ.classList && nextQ.classList.contains('cf-q')) {
-            // Tiny delay so the state class transition happens first
-            setTimeout(() => {
-              const firstField = nextQ.querySelector('input, textarea');
-              if (firstField && firstField.type !== 'radio') {
-                firstField.focus({ preventScroll: false });
-              }
-            }, 250);
+          advanceFrom(el.closest('.cf-q'));
+        });
+      }
+
+      // Text/email/tel: pressing Enter advances (textarea Enter still adds newline)
+      if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'email' || el.type === 'tel')) {
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            // Only advance if the field has content
+            if (el.value.trim().length > 0) {
+              refreshState();
+              advanceFrom(el.closest('.cf-q'));
+            }
           }
         });
       }
+    });
+
+    // Next button click: validate field has content, then advance
+    contactForm.querySelectorAll('.cf-next').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const q = btn.closest('.cf-q');
+        const field = q.querySelector('input:not([type="radio"]), textarea');
+        if (field && field.value.trim().length === 0) {
+          // Empty: just focus the field, don't advance
+          field.focus();
+          return;
+        }
+        refreshState();
+        advanceFrom(q);
+      });
     });
 
     // Set initial state
