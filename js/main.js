@@ -152,62 +152,9 @@
     });
   }
 
-  // ═══ AGENCY OFFER — sequenced Path 1 then Path 2 reveal ═══
-  // DEFENSIVE PATTERN: cards are visible by default in CSS. JS opts them
-  // into the load animation by adding .needs-reveal to the section. If JS
-  // throws or fails to run, cards stay visible — never invisible.
-  const offerSection = document.querySelector('.agency-offer');
-  if (offerSection) {
-    const offerCards = Array.from(offerSection.querySelectorAll('.offer-card'));
-    const PATH_GAP = 700; // ms between Path 1 and Path 2 starting
-
-    // Step 1: opt into the animation. CSS hides cards from this moment.
-    offerSection.classList.add('needs-reveal');
-
-    const runOfferReveal = () => {
-      offerCards.forEach((card, i) => {
-        if (card._revealTimer) clearTimeout(card._revealTimer);
-        card._revealTimer = setTimeout(() => {
-          card.classList.add('revealed');
-        }, i * PATH_GAP);
-      });
-    };
-
-    const resetOfferReveal = () => {
-      offerCards.forEach((card) => {
-        if (card._revealTimer) clearTimeout(card._revealTimer);
-        card.classList.remove('revealed');
-        void card.offsetHeight;
-      });
-    };
-
-    ScrollTrigger.create({
-      trigger: offerSection,
-      start: 'top 85%',
-      end: 'bottom 15%',
-      onEnter: runOfferReveal,
-      onEnterBack: runOfferReveal,
-      onLeave: resetOfferReveal,
-      onLeaveBack: resetOfferReveal
-    });
-
-    // SAFETY NET: if section is in viewport at page load, fire immediately.
-    const rect = offerSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
-      runOfferReveal();
-    }
-
-    // FAILSAFE: after 3s, force-reveal anything still hidden. Last line of
-    // defence. Combined with the visible-by-default CSS, users will never
-    // see permanently empty cards.
-    setTimeout(() => {
-      offerCards.forEach((card) => {
-        if (!card.classList.contains('revealed')) {
-          card.classList.add('revealed');
-        }
-      });
-    }, 3000);
-  }
+  // Agency offer cards are visible by default — no JS load animation needed.
+  // The section-heading and subhead use the standard .reveal class which
+  // handles their fade-in on scroll alongside everything else on the site.
 
   // ═══ PARALLAX ═══
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
