@@ -1595,35 +1595,18 @@ body.scrolled .hero-scroll-indicator {
   z-index: 1;
 }
 
-/* After — twilight photo. DEFAULT STATE is the 50/50 split, so the preview
-   renders correctly even if JS fails. The .in-view class then animates the
-   sweep-in for a cinematic entry. */
+/* After — twilight photo clipped to right 50%.
+   Pure CSS, no JS dependency. Always renders 50/50. */
 .phone-preview-after {
   z-index: 2;
   clip-path: inset(0 0 0 50%);
-  transition: clip-path 1.6s cubic-bezier(0.7, 0, 0.25, 1) 0.3s;
 }
 
-/* When section first enters view, sweep the twilight half in from the right.
-   We start it fully clipped, then JS adds .in-view → snaps to default 50/50. */
-.mobile-moment:not(.in-view) .phone-preview-after {
-  clip-path: inset(0 0 0 100%);
-}
-
-/* Scan line — defaults to center 50% (matches the split). */
+/* Scan line at center, with gentle pulse */
 .phone-preview-scan {
   left: 50%;
   opacity: 1;
-  transition: left 1.6s cubic-bezier(0.7, 0, 0.25, 1) 0.3s,
-              opacity 0.4s ease;
   animation: scanGlow 2.8s ease-in-out infinite;
-}
-
-/* Before .in-view fires, scan starts at right edge invisible, slides to 50% */
-.mobile-moment:not(.in-view) .phone-preview-scan {
-  left: 100%;
-  opacity: 0;
-  animation: none;
 }
 
 .phone-preview-label {
