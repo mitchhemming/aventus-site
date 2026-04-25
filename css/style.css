@@ -792,11 +792,11 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .foundation-body {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
-  font-size: clamp(15px, 1.5vw, 18px);
+  font-size: clamp(17px, 1.65vw, 20px);
   color: var(--white-dim);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .foundation-body em {
@@ -838,10 +838,10 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .section-sub {
-  font-size: clamp(16px, 1.6vw, 22px);
+  font-size: clamp(18px, 1.7vw, 24px);
   color: var(--white-dim);
   max-width: 600px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .section-sub-wide {
@@ -1281,9 +1281,9 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .cap-item p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--white-dim);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 /* ═══ MOBILE MOMENT ═══ */
@@ -1726,9 +1726,55 @@ body.scrolled .hero-scroll-indicator {
   background: rgba(6, 6, 11, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
   overflow: hidden;
+  /* Fade-up base state — JS toggles .revealed to animate in */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
+
+.offer-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Inner elements stagger in AFTER the card fades up.
+   Each child has its own delay so the card "fills with content" line by line. */
+.offer-card .offer-tag,
+.offer-card .offer-title,
+.offer-card .offer-lead,
+.offer-card .offer-list li,
+.offer-card .offer-foot {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.offer-card.revealed .offer-tag,
+.offer-card.revealed .offer-title,
+.offer-card.revealed .offer-lead,
+.offer-card.revealed .offer-list li,
+.offer-card.revealed .offer-foot {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays — relative to card's own .revealed firing */
+.offer-card.revealed .offer-tag      { transition-delay: 0.10s; }
+.offer-card.revealed .offer-title    { transition-delay: 0.20s; }
+.offer-card.revealed .offer-lead     { transition-delay: 0.35s; }
+.offer-card.revealed .offer-list li:nth-child(1) { transition-delay: 0.50s; }
+.offer-card.revealed .offer-list li:nth-child(2) { transition-delay: 0.60s; }
+.offer-card.revealed .offer-list li:nth-child(3) { transition-delay: 0.70s; }
+.offer-card.revealed .offer-list li:nth-child(4) { transition-delay: 0.80s; }
+.offer-card.revealed .offer-list li:nth-child(5) { transition-delay: 0.90s; }
+.offer-card.revealed .offer-foot     { transition-delay: 1.05s; }
 
 /* Top accent line on each card — fades in on hover */
 .offer-card::before {
@@ -1743,13 +1789,13 @@ body.scrolled .hero-scroll-indicator {
   transition: opacity 0.4s ease;
 }
 
-.offer-card:hover {
+.offer-card.revealed:hover {
   border-color: rgba(232, 168, 56, 0.4);
   transform: translateY(-4px);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
-.offer-card:hover::before {
+.offer-card.revealed:hover::before {
   opacity: 1;
 }
 
@@ -1777,11 +1823,11 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .offer-lead {
-  font-size: clamp(15px, 1.4vw, 17px);
+  font-size: clamp(17px, 1.55vw, 19px);
   color: var(--white-dim);
-  line-height: 1.55;
+  line-height: 1.6;
   margin-bottom: 36px;
-  max-width: 420px;
+  max-width: 460px;
 }
 
 .offer-list {
@@ -1797,11 +1843,11 @@ body.scrolled .hero-scroll-indicator {
   display: flex;
   align-items: baseline;
   gap: 18px;
-  padding: 16px 0;
+  padding: 18px 0;
   border-top: 1px solid var(--white-faint);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--white);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .offer-list li:last-child {
@@ -1825,54 +1871,10 @@ body.scrolled .hero-scroll-indicator {
 .offer-foot {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: clamp(15px, 1.3vw, 17px);
-  color: rgba(232, 168, 56, 0.85);
+  font-size: clamp(17px, 1.45vw, 20px);
+  color: rgba(232, 168, 56, 0.9);
   letter-spacing: 0.2px;
   line-height: 1.4;
-}
-
-/* ─── Bottom emphasis rows (platform / creative / existing assets) ─── */
-.agency-foot {
-  margin-top: 64px;
-  padding: 40px 48px;
-  border-top: 1px solid var(--white-faint);
-  border-bottom: 1px solid var(--white-faint);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.agency-foot-row {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 32px;
-  align-items: baseline;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--white-faint);
-}
-
-.agency-foot-row:last-child {
-  border-bottom: 0;
-}
-
-.agency-foot-label {
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 600;
-}
-
-.agency-foot-value {
-  font-size: clamp(17px, 1.7vw, 22px);
-  color: var(--white);
-  line-height: 1.4;
-  letter-spacing: 0.1px;
-  font-weight: 400;
-}
-
-.agency-foot-value em.accent-serif {
-  font-size: 1em;
 }
 
 /* ═══ UNIFIED MODEL ═══ */
@@ -2050,9 +2052,9 @@ body.scrolled .hero-scroll-indicator {
 }
 
 .bf-item p {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--white-dim);
-  line-height: 1.6;
+  line-height: 1.65;
   margin-bottom: 28px;
 }
 
@@ -2361,13 +2363,17 @@ h1.reveal.visible, h2.reveal.visible,
 }
 
 /* ── Editorial italic serif accent for emphasis words ── */
+/* Cormorant has smaller x-height than Plus Jakarta, so we scale it up
+   significantly so it reads at the same visual size as surrounding text. */
 .accent-serif {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 500;
   color: var(--gold);
   letter-spacing: -0.01em;
-  font-size: 1.08em;
+  font-size: 1.22em;
+  line-height: 0.85;
+  vertical-align: -0.02em;
 }
 
 /* ═══ Layer content above ambient layers ═══ */
@@ -2594,7 +2600,6 @@ main, section, footer {
   }
   .offer-grid::after { display: none; }
   .offer-card { padding: 44px 36px 40px; }
-  .agency-foot { padding: 32px 36px; }
 
   .bf-grid { grid-template-columns: 1fr; gap: 24px; }
   .bf-item { padding: 40px 32px; }
@@ -2815,20 +2820,11 @@ main, section, footer {
     font-size: clamp(30px, 9vw, 42px);
     margin-bottom: 14px;
   }
-  .offer-lead { font-size: 14px; margin-bottom: 24px; }
+  .offer-lead { font-size: 16px; margin-bottom: 24px; line-height: 1.55; }
   .offer-list { margin-bottom: 24px; }
-  .offer-list li { font-size: 14px; padding: 14px 0; gap: 14px; }
+  .offer-list li { font-size: 15px; padding: 16px 0; gap: 14px; line-height: 1.5; }
   .offer-li-num { font-size: 10px; letter-spacing: 1.5px; width: 18px; }
-  .offer-foot { font-size: 14px; }
-
-  .agency-foot { margin-top: 40px; padding: 24px 20px; }
-  .agency-foot-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 18px 0;
-  }
-  .agency-foot-label { font-size: 10px; letter-spacing: 3px; }
-  .agency-foot-value { font-size: 16px; line-height: 1.4; }
+  .offer-foot { font-size: 16px; }
 
   /* Unified statement */
   .unified { padding: 120px 20px; }
@@ -2954,4 +2950,14 @@ main, section, footer {
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  /* Offer cards: bypass JS-triggered reveal entirely */
+  .offer-card,
+  .offer-card .offer-tag,
+  .offer-card .offer-title,
+  .offer-card .offer-lead,
+  .offer-card .offer-list li,
+  .offer-card .offer-foot {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
