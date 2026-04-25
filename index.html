@@ -480,7 +480,7 @@
 
       <!-- Q1: Services -->
       <fieldset class="cf-q is-active" data-q="1">
-        <legend class="cf-label"><span class="cf-num">01</span>What are you interested in?</legend>
+        <div class="cf-label"><span class="cf-num">01</span>What are you interested in?</div>
         <div class="cf-options">
           <label class="cf-opt"><input type="radio" name="service" value="Media Production" required><span>Media Production</span></label>
           <label class="cf-opt"><input type="radio" name="service" value="AI Enhancement" required><span>AI Enhancement</span></label>
@@ -491,7 +491,7 @@
 
       <!-- Q2: Category -->
       <fieldset class="cf-q" data-q="2">
-        <legend class="cf-label"><span class="cf-num">02</span>What category is your business?</legend>
+        <div class="cf-label"><span class="cf-num">02</span>What category is your business?</div>
         <div class="cf-options">
           <label class="cf-opt"><input type="radio" name="category" value="Automotive" required><span>Automotive</span></label>
           <label class="cf-opt"><input type="radio" name="category" value="Real Estate" required><span>Real Estate</span></label>
@@ -502,31 +502,35 @@
 
       <!-- Q3: Project description -->
       <fieldset class="cf-q" data-q="3">
-        <legend class="cf-label"><span class="cf-num">03</span>What do you have in mind?</legend>
+        <div class="cf-label"><span class="cf-num">03</span>What do you have in mind?</div>
         <textarea name="project" class="cf-textarea" rows="4" required placeholder="A few lines about your project, goals, or what you're hoping to achieve."></textarea>
+        <button type="button" class="cf-next">Next <span aria-hidden="true">→</span></button>
       </fieldset>
 
       <!-- Q4: Name -->
       <fieldset class="cf-q" data-q="4">
-        <legend class="cf-label"><span class="cf-num">04</span>Your name</legend>
+        <div class="cf-label"><span class="cf-num">04</span>Your name</div>
         <input type="text" name="name" class="cf-input" required placeholder="First and last name">
+        <button type="button" class="cf-next">Next <span aria-hidden="true">→</span></button>
       </fieldset>
 
       <!-- Q5: Business -->
       <fieldset class="cf-q" data-q="5">
-        <legend class="cf-label"><span class="cf-num">05</span>Business name</legend>
+        <div class="cf-label"><span class="cf-num">05</span>Business name</div>
         <input type="text" name="business" class="cf-input" required placeholder="Your company">
+        <button type="button" class="cf-next">Next <span aria-hidden="true">→</span></button>
       </fieldset>
 
       <!-- Q6: Email -->
       <fieldset class="cf-q" data-q="6">
-        <legend class="cf-label"><span class="cf-num">06</span>Email address</legend>
+        <div class="cf-label"><span class="cf-num">06</span>Email address</div>
         <input type="email" name="email" class="cf-input" required placeholder="you@yourbusiness.com">
+        <button type="button" class="cf-next">Next <span aria-hidden="true">→</span></button>
       </fieldset>
 
       <!-- Q7: Phone -->
       <fieldset class="cf-q" data-q="7">
-        <legend class="cf-label"><span class="cf-num">07</span>Phone number</legend>
+        <div class="cf-label"><span class="cf-num">07</span>Phone number</div>
         <input type="tel" name="phone" class="cf-input" required placeholder="04XX XXX XXX">
       </fieldset>
 
